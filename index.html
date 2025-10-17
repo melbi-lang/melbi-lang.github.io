@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta
+            name="description"
+            content="A new programming language inspired by logic and beauty. Coming soon."
+        />
+        <title>Melbi Language — Beautiful and Logical</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Lexend+Deca:wght@100..900&display=swap");
+            .lexend-deca {
+                font-family: "Lexend Deca", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 700;
+                font-style: normal;
+            }
+        </style>
+        <style>
+            @keyframes fadeInBg {
+                0% {
+                    opacity: 0;
+                }
+                100% {
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeInText {
+                0% {
+                    opacity: 0;
+                    transform: translateY(10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-bg {
+                animation: fadeInBg 5s ease-in-out forwards;
+            }
+
+            .fade-in-1 {
+                animation: fadeInText 1.5s ease forwards;
+                animation-delay: 1s;
+                opacity: 0;
+            }
+
+            .fade-in-2 {
+                animation: fadeInText 1.5s ease forwards;
+                animation-delay: 3s;
+                opacity: 0;
+            }
+
+            .fade-in-3 {
+                animation: fadeInText 1.5s ease forwards;
+                animation-delay: 5s;
+                opacity: 0;
+            }
+        </style>
+    </head>
+    <body
+        class="h-screen flex items-center justify-center relative bg-black text-white overflow-hidden"
+    >
+        <div
+            class="absolute z-20 top-0 inset-x-0 flex justify-center overflow-hidden pointer-events-none"
+        >
+            <div class="w-[108rem] flex-none flex justify-end">
+                <picture
+                    ><source
+                        srcset="/assets/img/docs@30.8b9a76a2.avif"
+                        type="image/avif" />
+                    <img
+                        src="/assets/img/docs@tinypng.d9e4dcdc.png"
+                        alt=""
+                        class="w-[71.75rem] flex-none max-w-none dark:hidden"
+                        decoding="async" /></picture
+                ><picture
+                    ><source
+                        srcset="/assets/img/docs-dark@30.1a9f8cbf.avif"
+                        type="image/avif" />
+                    <img
+                        src="/assets/img/docs-dark@tinypng.1bbe175e.png"
+                        alt=""
+                        class="w-[90rem] flex-none max-w-none hidden dark:block"
+                        decoding="async"
+                /></picture>
+            </div>
+        </div>
+
+        <!-- Background image -->
+        <div
+            class="absolute inset-0 bg-cover bg-center fade-bg opacity-50"
+            style="
+                background-image: url(&quot;/assets/img/melbi-logo.svg&quot;);
+                background-size: 100% auto;
+                background-size: contain;
+                background-repeat: no-repeat;
+            "
+        ></div>
+
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/85"></div>
+
+        <!-- Content -->
+        <div class="relative text-center z-10 space-y-16 lexend-deca">
+            <h1
+                class="text-7xl md:text-8xl font-bold tracking-tight mb-4 text-fuchsia-400/80 [text-shadow:5px_5px_8px_rgba(236,72,153,0.6)] fade-in-1"
+            >
+                Melbi Language
+            </h1>
+            <p class="text-3xl md:text-4xl italic mb-8 fade-in-2">
+                Beautiful and logical.
+            </p>
+            <p
+                class="text-xl uppercase tracking-widest text-gray-500 fade-in-3"
+            >
+                Coming soon
+            </p>
+        </div>
+    </body>
+</html>
