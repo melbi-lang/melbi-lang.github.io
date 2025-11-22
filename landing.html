@@ -1,0 +1,722 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Melbi - The Embedded Language for Safe, Dynamic Logic</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+        <style>
+            @import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap");
+
+            /* CSS Variables for Theme Switching */
+            :root {
+                /* Light Mode (Default) - Based on light.scss & OneLightJekyll */
+                --bg-color: #ffffff;
+                --sidebar-color: #f5f7f9; /* Light grey for contrast */
+                --text-color: #5c5962;
+                --heading-color: #27262b;
+                --border-color: #e1e4e8;
+
+                /* Accents (Purple for Light Mode) */
+                --primary-color: #7e56c2;
+                --primary-hover: #6a48a5;
+                --link-color: #7e56c2;
+                --gradient-glow: rgba(126, 86, 194, 0.15); /* Purple glow */
+
+                /* Code (One Light) */
+                --code-bg: #f9f9f9;
+                --code-border: #e1e4e8;
+                --token-comment: #9fa0a6;
+                --token-keyword: #a625a4;
+                --token-function: #383942;
+                --token-string: #50a04f;
+                --token-punctuation: #383942;
+
+                /* Grid Pattern Color */
+                --grid-color: rgba(0, 0, 0, 0.03);
+            }
+
+            /* Dark Mode - Based on dark.scss & OneDarkJekyll */
+            html.dark {
+                --bg-color: #27262b;
+                --sidebar-color: #1f1e24;
+                --text-color: #eeebee;
+                --heading-color: #ffffff;
+                --border-color: #44434d;
+
+                /* Accents (Blue for Dark Mode) */
+                --primary-color: #72a7ed;
+                --primary-hover: #8cb5f0;
+                --link-color: #2a7ae2;
+                --gradient-glow: rgba(42, 122, 226, 0.15); /* Blue glow */
+
+                /* Code (One Dark Vivid) */
+                --code-bg: #31343f;
+                --code-border: #000000;
+                --token-comment: #63677e;
+                --token-keyword: #e19ef5;
+                --token-function: #dee2f7;
+                --token-string: #a3eea0;
+                --token-punctuation: #dee2f7;
+
+                /* Grid Pattern Color */
+                --grid-color: rgba(255, 255, 255, 0.03);
+            }
+
+            body {
+                font-family: "Inter", sans-serif;
+                background-color: var(--bg-color);
+                color: var(--text-color);
+                transition:
+                    background-color 0.3s ease,
+                    color 0.3s ease;
+            }
+
+            .font-mono {
+                font-family: "JetBrains Mono", monospace;
+            }
+
+            /* Dynamic Syntax Highlighting Classes */
+            .code-window {
+                background-color: var(--code-bg);
+                border-color: var(--code-border);
+                transition: background-color 0.3s;
+            }
+            .token-comment {
+                color: var(--token-comment);
+                font-style: italic;
+            }
+            .token-keyword {
+                color: var(--token-keyword);
+            }
+            .token-function {
+                color: var(--token-function);
+            }
+            .token-string {
+                color: var(--token-string);
+            }
+            .token-punctuation {
+                color: var(--token-punctuation);
+            }
+
+            /* Dynamic Grid Background */
+            .bg-grid-pattern {
+                background-size: 40px 40px;
+                background-image:
+                    linear-gradient(
+                        to right,
+                        var(--grid-color) 1px,
+                        transparent 1px
+                    ),
+                    linear-gradient(
+                        to bottom,
+                        var(--grid-color) 1px,
+                        transparent 1px
+                    );
+            }
+
+            /* Dynamic Glow */
+            .bg-glow {
+                background-color: var(--gradient-glow);
+            }
+        </style>
+        <script>
+            tailwind.config = {
+                darkMode: "class",
+                theme: {
+                    extend: {
+                        colors: {
+                            jtd: {
+                                bg: "var(--bg-color)",
+                                sidebar: "var(--sidebar-color)",
+                                text: "var(--text-color)",
+                                heading: "var(--heading-color)",
+                                border: "var(--border-color)",
+                                link: "var(--link-color)",
+                                primary: "var(--primary-color)",
+                                primaryHover: "var(--primary-hover)",
+                            },
+                        },
+                        animation: {
+                            "pulse-slow":
+                                "pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+                        },
+                    },
+                },
+            };
+        </script>
+        <!-- Init Theme Script to prevent flash -->
+        <script>
+            if (
+                localStorage.theme === "dark" ||
+                (!("theme" in localStorage) &&
+                    window.matchMedia("(prefers-color-scheme: dark)").matches)
+            ) {
+                document.documentElement.classList.add("dark");
+            } else {
+                document.documentElement.classList.remove("dark");
+            }
+        </script>
+    </head>
+    <body class="antialiased overflow-x-hidden flex flex-col min-h-screen">
+        <!-- Navigation -->
+        <nav
+            class="fixed w-full z-50 bg-jtd-bg/90 backdrop-blur-md border-b border-jtd-border transition-colors duration-300"
+            id="navbar"
+        >
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <!-- Logo -->
+                    <div
+                        class="flex-shrink-0 flex items-center gap-3 cursor-pointer"
+                        onclick="window.scrollTo(0,0)"
+                    >
+                        <div
+                            class="text-3xl animate-pulse-slow select-none transform hover:scale-110 transition-transform"
+                        >
+                            🖖
+                        </div>
+                        <span
+                            class="font-bold text-xl text-jtd-heading tracking-tight"
+                            >Melbi</span
+                        >
+                    </div>
+
+                    <!-- Desktop Menu -->
+                    <div class="hidden md:flex items-center space-x-8">
+                        <a
+                            href="#features"
+                            class="text-sm font-medium hover:text-jtd-primary transition-colors"
+                            >Features</a
+                        >
+                        <a
+                            href="#showcase"
+                            class="text-sm font-medium hover:text-jtd-primary transition-colors"
+                            >Code</a
+                        >
+                        <a
+                            href="#docs"
+                            class="text-sm font-medium hover:text-jtd-primary transition-colors"
+                            >Docs</a
+                        >
+                        <a
+                            href="https://github.com/melbi-lang/melbi"
+                            class="text-jtd-text hover:text-jtd-primary transition-colors"
+                        >
+                            <i data-lucide="github" class="w-5 h-5"></i>
+                        </a>
+
+                        <!-- Theme Toggle Desktop -->
+                        <button
+                            id="theme-toggle-desktop"
+                            class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-jtd-text transition-colors"
+                        >
+                            <i
+                                data-lucide="sun"
+                                class="w-5 h-5 hidden dark:block"
+                            ></i>
+                            <i
+                                data-lucide="moon"
+                                class="w-5 h-5 block dark:hidden"
+                            ></i>
+                        </button>
+
+                        <a
+                            href="/documentation"
+                            class="px-4 py-2 text-sm font-bold text-white bg-jtd-primary hover:bg-jtd-primaryHover rounded-md transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+                        >
+                            Get Started
+                        </a>
+                    </div>
+
+                    <!-- Mobile Menu Button -->
+                    <div class="md:hidden flex items-center gap-4">
+                        <!-- Theme Toggle Mobile -->
+                        <button
+                            id="theme-toggle-mobile"
+                            class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-white/10 text-jtd-text transition-colors"
+                        >
+                            <i
+                                data-lucide="sun"
+                                class="w-5 h-5 hidden dark:block"
+                            ></i>
+                            <i
+                                data-lucide="moon"
+                                class="w-5 h-5 block dark:hidden"
+                            ></i>
+                        </button>
+
+                        <button
+                            id="mobile-menu-btn"
+                            class="text-jtd-text hover:text-jtd-heading focus:outline-none"
+                        >
+                            <i data-lucide="menu" class="w-6 h-6"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Menu -->
+            <div
+                id="mobile-menu"
+                class="hidden md:hidden bg-jtd-sidebar border-b border-jtd-border transition-colors duration-300"
+            >
+                <div class="px-4 pt-2 pb-4 space-y-2">
+                    <a
+                        href="#features"
+                        class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/5 hover:text-jtd-primary"
+                        >Features</a
+                    >
+                    <a
+                        href="#showcase"
+                        class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/5 hover:text-jtd-primary"
+                        >Code</a
+                    >
+                    <a
+                        href="/documentation"
+                        class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/5 hover:text-jtd-primary"
+                        >Documentation</a
+                    >
+                    <a
+                        href="https://github.com/melbi-lang/melbi"
+                        class="block px-3 py-2 rounded-md text-base font-medium text-jtd-primary"
+                        >GitHub Repo</a
+                    >
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Section -->
+        <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
+            <!-- Background effects -->
+            <div
+                class="absolute inset-0 bg-grid-pattern pointer-events-none transition-all duration-500"
+            ></div>
+            <!-- Dynamic Glow Effect -->
+            <div
+                class="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-glow rounded-full blur-[100px] pointer-events-none transition-colors duration-500"
+            ></div>
+
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center"
+            >
+                <div
+                    class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-jtd-primary/10 border border-jtd-primary/20 text-jtd-primary text-xs font-medium mb-8"
+                >
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-jtd-primary opacity-75"
+                        ></span>
+                        <span
+                            class="relative inline-flex rounded-full h-2 w-2 bg-jtd-primary"
+                        ></span>
+                    </span>
+                    available in alpha preview
+                </div>
+
+                <h1
+                    class="text-5xl md:text-7xl font-extrabold text-jtd-heading tracking-tight mb-6 leading-tight transition-colors duration-300"
+                >
+                    Melbi: The
+                    <span
+                        class="text-jtd-primary transition-colors duration-300"
+                        >Embedded Language</span
+                    ><br class="hidden md:block" />
+                    for Safe, Dynamic Logic.
+                </h1>
+
+                <p
+                    class="mt-6 max-w-3xl mx-auto text-lg md:text-xl text-jtd-text opacity-80 leading-relaxed transition-colors duration-300"
+                >
+                    Give your users or power systems the ability to define
+                    <strong class="text-jtd-heading"
+                        >conditional behavior</strong
+                    >,
+                    <strong class="text-jtd-heading"
+                        >data transformations</strong
+                    >, and
+                    <strong class="text-jtd-heading">automation rules</strong
+                    >—without ever modifying your application's source code.
+                </p>
+
+                <div
+                    class="mt-10 flex flex-col sm:flex-row justify-center gap-4"
+                >
+                    <a
+                        href="/documentation"
+                        class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-jtd-primary rounded-lg hover:bg-jtd-primaryHover transition-all shadow-lg hover:scale-105"
+                    >
+                        Start Embedding Now
+                        <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                    </a>
+                    <a
+                        href="#features"
+                        class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-jtd-heading bg-transparent border border-jtd-border rounded-lg hover:bg-jtd-heading/5 transition-all hover:scale-105"
+                    >
+                        See How it Works
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section
+            id="features"
+            class="py-24 bg-jtd-sidebar border-y border-jtd-border relative transition-colors duration-300"
+        >
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-3xl mx-auto mb-16">
+                    <h2
+                        class="text-3xl md:text-4xl font-bold text-jtd-heading mb-4 transition-colors duration-300"
+                    >
+                        Why Choose Melbi?
+                    </h2>
+                    <div
+                        class="h-1 w-20 bg-jtd-primary mx-auto rounded-full transition-colors duration-300"
+                    ></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div
+                        class="group p-8 rounded-md bg-jtd-bg border border-jtd-border hover:border-jtd-primary/50 transition-all duration-300 hover:shadow-xl"
+                    >
+                        <div
+                            class="w-12 h-12 bg-blue-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors"
+                        >
+                            <i
+                                data-lucide="shield-check"
+                                class="w-6 h-6 text-blue-500 dark:text-blue-400"
+                            ></i>
+                        </div>
+                        <h3
+                            class="text-xl font-bold text-jtd-heading mb-3 transition-colors duration-300"
+                        >
+                            Sandboxed & Restricted
+                        </h3>
+                        <p
+                            class="text-jtd-text leading-relaxed transition-colors duration-300"
+                        >
+                            Ensure
+                            <strong class="text-jtd-heading"
+                                >runtime safety</strong
+                            >
+                            with its
+                            <strong class="text-jtd-heading">sandboxed</strong>
+                            environment. Perfect for tasks like defining
+                            <strong class="text-jtd-heading"
+                                >email filters</strong
+                            >
+                            or user-defined triggers.
+                        </p>
+                    </div>
+
+                    <!-- Feature 2 -->
+                    <div
+                        class="group p-8 rounded-md bg-jtd-bg border border-jtd-border hover:border-jtd-primary/50 transition-all duration-300 hover:shadow-xl"
+                    >
+                        <div
+                            class="w-12 h-12 bg-purple-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors"
+                        >
+                            <i
+                                data-lucide="zap"
+                                class="w-6 h-6 text-purple-500 dark:text-purple-400"
+                            ></i>
+                        </div>
+                        <h3
+                            class="text-xl font-bold text-jtd-heading mb-3 transition-colors duration-300"
+                        >
+                            Type Safe & Fast
+                        </h3>
+                        <p
+                            class="text-jtd-text leading-relaxed transition-colors duration-300"
+                        >
+                            Melbi is built to be
+                            <strong class="text-jtd-heading">type-safe</strong>
+                            and
+                            <strong class="text-jtd-heading"
+                                >expression-focused</strong
+                            >, with
+                            <strong class="text-jtd-heading"
+                                >arena-based execution</strong
+                            >
+                            for performance comparable to native code.
+                        </p>
+                    </div>
+
+                    <!-- Feature 3 -->
+                    <div
+                        class="group p-8 rounded-md bg-jtd-bg border border-jtd-border hover:border-jtd-primary/50 transition-all duration-300 hover:shadow-xl"
+                    >
+                        <div
+                            class="w-12 h-12 bg-green-500/10 rounded-lg flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors"
+                        >
+                            <i
+                                data-lucide="layers"
+                                class="w-6 h-6 text-green-500 dark:text-green-400"
+                            ></i>
+                        </div>
+                        <h3
+                            class="text-xl font-bold text-jtd-heading mb-3 transition-colors duration-300"
+                        >
+                            Flexible & Embeddable
+                        </h3>
+                        <p
+                            class="text-jtd-text leading-relaxed transition-colors duration-300"
+                        >
+                            Designed to be effortlessly
+                            <strong class="text-jtd-heading">embeddable</strong
+                            >, Melbi separates dynamic user logic from your main
+                            codebase.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Code Showcase Section -->
+        <section
+            id="showcase"
+            class="py-24 relative overflow-hidden bg-jtd-bg transition-colors duration-300"
+        >
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Text Content -->
+                    <div class="order-2 lg:order-1">
+                        <h2
+                            class="text-3xl md:text-4xl font-bold text-jtd-heading mb-6 transition-colors duration-300"
+                        >
+                            Write Elegant Code
+                        </h2>
+                        <p
+                            class="text-lg text-jtd-text mb-8 transition-colors duration-300"
+                        >
+                            A simple example of A/B testing business logic shows
+                            off Melbi's clean, expression-focused syntax.
+                        </p>
+
+                        <div class="flex items-start gap-4 mb-8">
+                            <div
+                                class="flex-shrink-0 w-6 h-6 mt-1 rounded-full bg-jtd-primary/20 flex items-center justify-center"
+                            >
+                                <i
+                                    data-lucide="check"
+                                    class="w-3 h-3 text-jtd-primary"
+                                ></i>
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-jtd-heading font-medium transition-colors duration-300"
+                                >
+                                    Highly Readable
+                                </h4>
+                                <p
+                                    class="text-sm text-jtd-text mt-1 opacity-80 transition-colors duration-300"
+                                >
+                                    Melbi's readable syntax lowers the barrier
+                                    for users to define powerful custom logic.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex-shrink-0 w-6 h-6 mt-1 rounded-full bg-jtd-primary/20 flex items-center justify-center"
+                            >
+                                <i
+                                    data-lucide="check"
+                                    class="w-3 h-3 text-jtd-primary"
+                                ></i>
+                            </div>
+                            <div>
+                                <h4
+                                    class="text-jtd-heading font-medium transition-colors duration-300"
+                                >
+                                    Minimal Boilerplate
+                                </h4>
+                                <p
+                                    class="text-sm text-jtd-text mt-1 opacity-80 transition-colors duration-300"
+                                >
+                                    Focus on logic, not configuration. Melbi
+                                    infers types wherever possible.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Code Window -->
+                    <div class="order-1 lg:order-2">
+                        <div
+                            class="rounded-lg shadow-2xl border border-gray-200 dark:border-black/30 overflow-hidden transform transition-all hover:-translate-y-2 duration-500"
+                        >
+                            <!-- Window Header -->
+                            <div
+                                class="flex items-center px-4 py-3 bg-gray-100 dark:bg-[#21252b] border-b border-gray-200 dark:border-black/20 transition-colors duration-300"
+                            >
+                                <div class="flex space-x-2">
+                                    <div
+                                        class="w-3 h-3 rounded-full bg-red-500"
+                                    ></div>
+                                    <div
+                                        class="w-3 h-3 rounded-full bg-yellow-500"
+                                    ></div>
+                                    <div
+                                        class="w-3 h-3 rounded-full bg-green-500"
+                                    ></div>
+                                </div>
+                                <div
+                                    class="ml-4 text-xs text-gray-500 font-mono flex items-center"
+                                >
+                                    <i
+                                        data-lucide="file-code"
+                                        class="w-3 h-3 mr-2"
+                                    ></i>
+                                    main.melbi
+                                </div>
+                            </div>
+                            <!-- Code Area -->
+                            <div class="code-window p-6 overflow-x-auto">
+                                <pre
+                                    class="font-mono text-sm md:text-base leading-relaxed"
+                                ><code><span class="token-comment">// A/B test rollout decision</span>
+user.country <span class="token-punctuation">==</span> <span class="token-string">"US"</span> <span class="token-keyword">and</span> user.age <span class="token-punctuation">&gt;=</span> 18 <span class="token-keyword">and</span>
+<span class="token-function">Hash.ConsistentHash</span>(user.id, 100) <span class="token-punctuation">&lt;</span> rollout
+<span class="token-keyword">where</span> <span class="token-punctuation">{</span>
+    rollout<span class="token-punctuation"> =</span> rollouts[feature_name] <span class="token-keyword">otherwise</span> 0
+<span class="token-punctuation">}</span></code></pre>
+                            </div>
+                            <!-- StatusBar -->
+                            <div
+                                class="px-4 py-2 bg-gray-100 dark:bg-[#21252b] border-t border-gray-200 dark:border-black/20 flex justify-between items-center text-[10px] text-gray-500 font-mono transition-colors duration-300"
+                            >
+                                <span>UTF-8</span>
+                                <span>Ln 5, Col 2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Final CTA -->
+        <section
+            class="py-24 bg-jtd-sidebar border-t border-jtd-border transition-colors duration-300"
+        >
+            <div class="max-w-4xl mx-auto px-4 text-center">
+                <h2
+                    class="text-3xl md:text-5xl font-bold text-jtd-heading mb-6 transition-colors duration-300"
+                >
+                    Ready to Dive Deeper?
+                </h2>
+                <p
+                    class="text-lg text-jtd-text mb-10 max-w-2xl mx-auto transition-colors duration-300"
+                >
+                    Explore the full Melbi documentation, tutorials, and
+                    examples on integrating Melbi into your project.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a
+                        href="/documentation"
+                        class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-jtd-primary rounded-lg hover:bg-jtd-primaryHover transition-all shadow-lg"
+                    >
+                        Read the Docs
+                        <i data-lucide="book-open" class="ml-2 w-4 h-4"></i>
+                    </a>
+                    <a
+                        href="https://github.com/melbi-lang/melbi"
+                        class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-jtd-heading bg-transparent border border-jtd-border rounded-lg hover:bg-jtd-heading/5 transition-all"
+                    >
+                        <i data-lucide="github" class="mr-2 w-5 h-5"></i>
+                        View on GitHub
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer
+            class="bg-jtd-bg py-12 border-t border-jtd-border mt-auto transition-colors duration-300"
+        >
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center"
+            >
+                <div class="flex items-center gap-3 mb-4 md:mb-0">
+                    <div class="text-2xl select-none">🖖</div>
+                    <span
+                        class="font-semibold text-jtd-heading tracking-tight transition-colors duration-300"
+                        >Melbi</span
+                    >
+                </div>
+                <div class="text-gray-500 text-sm">
+                    &copy; 2025 Melbi Language Project.
+                </div>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <a
+                        href="#"
+                        class="text-gray-500 hover:text-jtd-primary transition-colors"
+                        ><i data-lucide="twitter" class="w-4 h-4"></i
+                    ></a>
+                    <a
+                        href="#"
+                        class="text-gray-500 hover:text-jtd-primary transition-colors"
+                        ><i data-lucide="github" class="w-4 h-4"></i
+                    ></a>
+                    <a
+                        href="#"
+                        class="text-gray-500 hover:text-jtd-primary transition-colors"
+                        ><i data-lucide="slack" class="w-4 h-4"></i
+                    ></a>
+                </div>
+            </div>
+        </footer>
+
+        <script>
+            // Initialize Lucide icons
+            lucide.createIcons();
+
+            // Mobile menu toggle
+            const btn = document.getElementById("mobile-menu-btn");
+            const menu = document.getElementById("mobile-menu");
+
+            btn.addEventListener("click", () => {
+                menu.classList.toggle("hidden");
+            });
+
+            // Theme Toggle Logic
+            const toggleDesktop = document.getElementById(
+                "theme-toggle-desktop",
+            );
+            const toggleMobile = document.getElementById("theme-toggle-mobile");
+
+            function toggleTheme() {
+                if (document.documentElement.classList.contains("dark")) {
+                    document.documentElement.classList.remove("dark");
+                    localStorage.theme = "light";
+                } else {
+                    document.documentElement.classList.add("dark");
+                    localStorage.theme = "dark";
+                }
+            }
+
+            toggleDesktop.addEventListener("click", toggleTheme);
+            toggleMobile.addEventListener("click", toggleTheme);
+
+            // Smooth scroll for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+                anchor.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    document
+                        .querySelector(this.getAttribute("href"))
+                        .scrollIntoView({
+                            behavior: "smooth",
+                        });
+                    // Close mobile menu if open
+                    if (!menu.classList.contains("hidden")) {
+                        menu.classList.add("hidden");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
