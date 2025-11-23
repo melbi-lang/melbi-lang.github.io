@@ -1,31 +1,24 @@
-import {
-  Parser,
-  Language,
-} from "https://cdn.jsdelivr.net/npm/web-tree-sitter@0.25.10/tree-sitter.js";
+import { Parser, Language } from "https://cdn.jsdelivr.net/npm/web-tree-sitter@0.25.10/tree-sitter.js";
 import * as monaco from "https://cdn.jsdelivr.net/npm/monaco-editor@0.54.0/+esm";
 import init, { PlaygroundEngine } from "/playground/wasm/playground_worker.js";
 (function polyfill() {
   const relList = document.createElement("link").relList;
   if (relList && relList.supports && relList.supports("modulepreload")) return;
-  for (const link of document.querySelectorAll('link[rel="modulepreload"]'))
-    processPreload(link);
+  for (const link of document.querySelectorAll('link[rel="modulepreload"]')) processPreload(link);
   new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       if (mutation.type !== "childList") continue;
-      for (const node of mutation.addedNodes)
-        if (node.tagName === "LINK" && node.rel === "modulepreload")
-          processPreload(node);
+      for (const node of mutation.addedNodes) if (node.tagName === "LINK" && node.rel === "modulepreload") processPreload(node);
     }
   }).observe(document, {
     childList: true,
-    subtree: true,
+    subtree: true
   });
   function getFetchOpts(link) {
     const fetchOpts = {};
     if (link.integrity) fetchOpts.integrity = link.integrity;
     if (link.referrerPolicy) fetchOpts.referrerPolicy = link.referrerPolicy;
-    if (link.crossOrigin === "use-credentials")
-      fetchOpts.credentials = "include";
+    if (link.crossOrigin === "use-credentials") fetchOpts.credentials = "include";
     else if (link.crossOrigin === "anonymous") fetchOpts.credentials = "omit";
     else fetchOpts.credentials = "same-origin";
     return fetchOpts;
@@ -48,7 +41,7 @@ const NODE_SCOPE_MAP = {
   identifier: "variable.other.melbi",
   quoted_identifier: "variable.other.quoted.melbi",
   unquoted_identifier: "variable.other.melbi",
-  type_path: "entity.name.type.melbi",
+  type_path: "entity.name.type.melbi"
 };
 const DEFAULT_SCOPE = "source.melbi";
 const COMPLETION_KIND_MAP = {
@@ -56,7 +49,7 @@ const COMPLETION_KIND_MAP = {
   variable: "Variable",
   keyword: "Keyword",
   snippet: "Snippet",
-  text: "Text",
+  text: "Text"
 };
 class MelbiTokenState {
   constructor(lineNumber = 0, version = 0) {
@@ -67,11 +60,7 @@ class MelbiTokenState {
     return new MelbiTokenState(this.lineNumber, this.version);
   }
   equals(other) {
-    return (
-      !!other &&
-      this.lineNumber === other.lineNumber &&
-      this.version === other.version
-    );
+    return !!other && this.lineNumber === other.lineNumber && this.version === other.version;
   }
 }
 function computeNewEndPosition(range, text) {
@@ -84,25 +73,13 @@ function computeNewEndPosition(range, text) {
   if (lines.length === 1) {
     return { row: startRow, column: startColumn + lines[0].length };
   }
-  return {
-    row: startRow + lines.length - 1,
-    column: lines[lines.length - 1].length,
-  };
+  return { row: startRow + lines.length - 1, column: lines[lines.length - 1].length };
 }
 function createEmptyTokenLines(model, defaultScope = DEFAULT_SCOPE) {
-  const lineCount =
-    typeof model?.getLineCount === "function" ? model.getLineCount() : 0;
-  return Array.from({ length: lineCount }, () => [
-    { startIndex: 0, scopes: defaultScope },
-  ]);
+  const lineCount = typeof model?.getLineCount === "function" ? model.getLineCount() : 0;
+  return Array.from({ length: lineCount }, () => [{ startIndex: 0, scopes: defaultScope }]);
 }
-function pushTokenRange(
-  node,
-  scope,
-  lineMap,
-  model,
-  defaultScope = DEFAULT_SCOPE,
-) {
+function pushTokenRange(node, scope, lineMap, model, defaultScope = DEFAULT_SCOPE) {
   const start = node.startPosition;
   const end = node.endPosition;
   for (let row = start.row; row <= end.row; row += 1) {
@@ -111,8 +88,7 @@ function pushTokenRange(
       continue;
     }
     const startColumn = row === start.row ? start.column : 0;
-    const endColumn =
-      row === end.row ? end.column : model.getLineLength(row + 1);
+    const endColumn = row === end.row ? end.column : model.getLineLength(row + 1);
     if (startColumn === endColumn) {
       continue;
     }
@@ -120,12 +96,7 @@ function pushTokenRange(
     tokens.push({ startIndex: endColumn, scopes: defaultScope });
   }
 }
-function buildTokensFromTree(
-  tree,
-  model,
-  scopeMap = NODE_SCOPE_MAP,
-  defaultScope = DEFAULT_SCOPE,
-) {
+function buildTokensFromTree(tree, model, scopeMap = NODE_SCOPE_MAP, defaultScope = DEFAULT_SCOPE) {
   const tokenLines = createEmptyTokenLines(model, defaultScope);
   if (!tree?.rootNode || !model) {
     return tokenLines;
@@ -146,9 +117,7 @@ function buildTokensFromTree(
       }
     }
   }
-  return tokenLines.map((lineTokens) =>
-    lineTokens.sort((a, b) => a.startIndex - b.startIndex),
-  );
+  return tokenLines.map((lineTokens) => lineTokens.sort((a, b) => a.startIndex - b.startIndex));
 }
 function spanToRange(model, span) {
   if (!span) {
@@ -157,7 +126,7 @@ function spanToRange(model, span) {
       startLineNumber: position.lineNumber,
       startColumn: position.column,
       endLineNumber: position.lineNumber,
-      endColumn: position.column,
+      endColumn: position.column
     };
   }
   const start = model.getPositionAt(span.start ?? 0);
@@ -166,14 +135,11 @@ function spanToRange(model, span) {
     startLineNumber: start.lineNumber,
     startColumn: start.column,
     endLineNumber: end.lineNumber,
-    endColumn: end.column,
+    endColumn: end.column
   };
 }
 function tsPointToOffset(model, point) {
-  return model.getOffsetAt({
-    lineNumber: point.row + 1,
-    column: point.column + 1,
-  });
+  return model.getOffsetAt({ lineNumber: point.row + 1, column: point.column + 1 });
 }
 function nodeToSpan(model, node) {
   const startIndex = tsPointToOffset(model, node.startPosition);
@@ -201,23 +167,15 @@ function collectSyntaxDiagnostics(tree, model) {
         severity: "error",
         code: "missing",
         span: nodeToSpan(model, node),
-        source: "parser",
+        source: "parser"
       });
-    } else if (
-      typeof node.isError === "function" &&
-      node.isError() &&
-      !(
-        node.parent &&
-        typeof node.parent.isError === "function" &&
-        node.parent.isError()
-      )
-    ) {
+    } else if (typeof node.isError === "function" && node.isError() && !(node.parent && typeof node.parent.isError === "function" && node.parent.isError())) {
       diagnostics.push({
         message: "Syntax error",
         severity: "error",
         code: "syntax",
         span: nodeToSpan(model, node),
-        source: "parser",
+        source: "parser"
       });
     }
     if (Array.isArray(node.children)) {
@@ -229,31 +187,20 @@ function collectSyntaxDiagnostics(tree, model) {
   diagnostics.sort((a, b) => (a.span?.start ?? 0) - (b.span?.start ?? 0));
   return diagnostics;
 }
-function mapCompletionItem(
-  monaco2,
-  model,
-  position,
-  item,
-  kindMap = COMPLETION_KIND_MAP,
-) {
+function mapCompletionItem(monaco2, model, position, item, kindMap = COMPLETION_KIND_MAP) {
   const word = model.getWordUntilPosition(position);
   const range = new monaco2.Range(
     position.lineNumber,
     word.startColumn,
     position.lineNumber,
-    word.endColumn,
+    word.endColumn
   );
   const kindKey = (item.kind || item.type || "text").toString().toLowerCase();
   const kindName = kindMap[kindKey] || kindMap.text;
-  const kind =
-    monaco2.languages.CompletionItemKind[kindName] ||
-    monaco2.languages.CompletionItemKind.Text;
-  const insertText =
-    item.insert_text || item.snippet || item.text || item.label || "";
+  const kind = monaco2.languages.CompletionItemKind[kindName] || monaco2.languages.CompletionItemKind.Text;
+  const insertText = item.insert_text || item.snippet || item.text || item.label || "";
   const isSnippet = Boolean(item.snippet || item.is_snippet);
-  const insertTextRules = isSnippet
-    ? monaco2.languages.CompletionItemInsertTextRule.InsertAsSnippet
-    : void 0;
+  const insertTextRules = isSnippet ? monaco2.languages.CompletionItemInsertTextRule.InsertAsSnippet : void 0;
   return {
     label: item.label || item.text || insertText,
     kind,
@@ -261,7 +208,7 @@ function mapCompletionItem(
     documentation: item.documentation,
     insertText,
     insertTextRules,
-    range,
+    range
   };
 }
 function applyEditsToTree(tree, changes, computeFn = computeNewEndPosition) {
@@ -276,13 +223,13 @@ function applyEditsToTree(tree, changes, computeFn = computeNewEndPosition) {
       newEndIndex: change.rangeOffset + change.text.length,
       startPosition: {
         row: change.range.startLineNumber - 1,
-        column: change.range.startColumn - 1,
+        column: change.range.startColumn - 1
       },
       oldEndPosition: {
         row: change.range.endLineNumber - 1,
-        column: change.range.endColumn - 1,
+        column: change.range.endColumn - 1
       },
-      newEndPosition: computeFn(change.range, change.text),
+      newEndPosition: computeFn(change.range, change.text)
     });
   }
 }
@@ -293,7 +240,7 @@ self.MonacoEnvironment = {
       self.MonacoEnvironment = { baseUrl: '${MONACO_CDN}/' };
     `;
     return `data:text/javascript;charset=utf-8,${encodeURIComponent(proxy)}`;
-  },
+  }
 };
 const TREE_SITTER_WASM_URL = "/playground/wasm/tree-sitter-melbi.wasm";
 const LANGUAGE_CONFIG_URL = "/playground/assets/language-configuration.json";
@@ -316,12 +263,12 @@ const state = {
     editorContainer: null,
     output: null,
     themeToggle: null,
-    timing: null,
+    timing: null
   },
   currentTheme: "light",
   autoRunHandle: null,
   pendingAutoRunAfterInFlight: false,
-  inFlightEvaluation: null,
+  inFlightEvaluation: null
 };
 function getDomRefs() {
   if (typeof document === "undefined") {
@@ -331,9 +278,9 @@ function getDomRefs() {
     editorContainer: document.querySelector("#melbi-playground .melbi-editor"),
     output: document.querySelector("#melbi-playground .melbi-output"),
     themeToggle: document.querySelector(
-      "#melbi-playground .melbi-theme-toggle",
+      "#melbi-playground .melbi-theme-toggle"
     ),
-    timing: document.querySelector("#melbi-playground .melbi-timing"),
+    timing: document.querySelector("#melbi-playground .melbi-timing")
   };
 }
 function renderResponse(payload) {
@@ -341,10 +288,7 @@ function renderResponse(payload) {
     return;
   }
   if (payload.status === "ok") {
-    const durationText =
-      payload.data.duration_ms < 0.01
-        ? "<0.01ms"
-        : `${payload.data.duration_ms.toFixed(2)}ms`;
+    const durationText = payload.data.duration_ms < 0.01 ? "<0.01ms" : `${payload.data.duration_ms.toFixed(2)}ms`;
     state.dom.output.innerHTML = `${payload.data.value} <span class="type">${payload.data.type_name}</span>`;
     if (state.dom.timing) {
       state.dom.timing.textContent = durationText;
@@ -362,7 +306,8 @@ async function ensureEngine() {
         const instance = new PlaygroundEngine();
         try {
           await instance.evaluate("1 + 1");
-        } catch (err) {}
+        } catch (err) {
+        }
         return instance;
       } catch (err) {
         console.error(err);
@@ -379,7 +324,7 @@ async function ensureParser() {
       await Parser.init({
         locateFile(scriptName, scriptDirectory) {
           return `https://cdn.jsdelivr.net/npm/web-tree-sitter@0.25.10/${scriptName}`;
-        },
+        }
       });
       const language = await Language.load(TREE_SITTER_WASM_URL);
       const parser = new Parser();
@@ -413,12 +358,12 @@ async function loadLanguageConfig() {
     if (config.indentationRules) {
       if (typeof config.indentationRules.increaseIndentPattern === "string") {
         config.indentationRules.increaseIndentPattern = new RegExp(
-          config.indentationRules.increaseIndentPattern,
+          config.indentationRules.increaseIndentPattern
         );
       }
       if (typeof config.indentationRules.decreaseIndentPattern === "string") {
         config.indentationRules.decreaseIndentPattern = new RegExp(
-          config.indentationRules.decreaseIndentPattern,
+          config.indentationRules.decreaseIndentPattern
         );
       }
     }
@@ -443,23 +388,18 @@ function updateDiagnostics(workerDiagnostics) {
   }
   const combinedDiagnostics = [
     ...state.lastSyntaxDiagnostics,
-    ...state.lastWorkerDiagnostics,
+    ...state.lastWorkerDiagnostics
   ];
   const markers = combinedDiagnostics.map((diag) => {
     const range = spanToRange(model, diag.span);
     const severity = (diag.severity || "").toLowerCase();
-    const markerSeverity =
-      severity === "error"
-        ? state.monacoApi.MarkerSeverity.Error
-        : severity === "warning"
-          ? state.monacoApi.MarkerSeverity.Warning
-          : state.monacoApi.MarkerSeverity.Info;
+    const markerSeverity = severity === "error" ? state.monacoApi.MarkerSeverity.Error : severity === "warning" ? state.monacoApi.MarkerSeverity.Warning : state.monacoApi.MarkerSeverity.Info;
     return {
       ...range,
       message: diag.message,
       severity: markerSeverity,
       code: diag.code,
-      source: diag.source || "melbi",
+      source: diag.source || "melbi"
     };
   });
   state.monacoApi.editor.setModelMarkers(model, MARKER_OWNER, markers);
@@ -469,22 +409,19 @@ async function getHoverFromWorker(model, position) {
   const response = await callWorkerMethod(
     ["hover_at_position", "hover_at", "hover"],
     model.getValue(),
-    offset,
+    offset
   );
   if (!response || response.status !== "ok") {
     return null;
   }
-  const contents =
-    response.data?.contents || response.data?.text || response.data?.value;
+  const contents = response.data?.contents || response.data?.text || response.data?.value;
   if (!contents) {
     return null;
   }
-  const range = response.data?.span
-    ? spanToRange(model, response.data.span)
-    : null;
+  const range = response.data?.span ? spanToRange(model, response.data.span) : null;
   return {
     contents: [{ value: contents }],
-    range,
+    range
   };
 }
 async function getCompletionsFromWorker(model, position) {
@@ -494,10 +431,10 @@ async function getCompletionsFromWorker(model, position) {
       "completions_at_position",
       "completions_at",
       "completion_items",
-      "complete",
+      "complete"
     ],
     model.getValue(),
-    offset,
+    offset
   );
   if (!response || response.status !== "ok") {
     return [];
@@ -534,28 +471,22 @@ function registerLanguageProviders(monaco2, languageConfig) {
         console.error("Hover provider failed", err);
         return null;
       }
-    },
+    }
   });
   monaco2.languages.registerCompletionItemProvider("melbi", {
     triggerCharacters: [" ", ".", ":", "("],
     provideCompletionItems: async (model, position) => {
       try {
         const workerItems = await getCompletionsFromWorker(model, position);
-        const suggestions = workerItems.map((item) =>
-          mapCompletionItem(
-            monaco2,
-            model,
-            position,
-            item,
-            COMPLETION_KIND_MAP,
-          ),
+        const suggestions = workerItems.map(
+          (item) => mapCompletionItem(monaco2, model, position, item, COMPLETION_KIND_MAP)
         );
         return { suggestions };
       } catch (err) {
         console.error("Completion provider failed", err);
         return { suggestions: [] };
       }
-    },
+    }
   });
 }
 function createTokensProvider() {
@@ -567,11 +498,11 @@ function createTokensProvider() {
       return {
         tokens: lineTokens.map((token) => ({
           startIndex: token.startIndex,
-          scopes: token.scopes,
+          scopes: token.scopes
         })),
-        endState: new MelbiTokenState(lineIndex + 1, state.tokenStateVersion),
+        endState: new MelbiTokenState(lineIndex + 1, state.tokenStateVersion)
       };
-    },
+    }
   };
 }
 function updateEditorHeight() {
@@ -584,7 +515,7 @@ function updateEditorHeight() {
   }
   const lineCount = model.getLineCount();
   const lineHeight = state.editor.getOption(
-    state.monacoApi.editor.EditorOption.lineHeight,
+    state.monacoApi.editor.EditorOption.lineHeight
   );
   const padding = 16;
   state.dom.editorContainer.style.height;
@@ -593,7 +524,7 @@ function updateEditorHeight() {
   const idealHeight = lineCount * lineHeight + padding;
   const newHeight = Math.max(
     lineHeight + padding,
-    Math.min(maxHeight, idealHeight),
+    Math.min(maxHeight, idealHeight)
   );
   const isAtMaxHeight = idealHeight >= maxHeight;
   state.dom.editorContainer.style.height = `${newHeight}px`;
@@ -602,8 +533,8 @@ function updateEditorHeight() {
       vertical: isAtMaxHeight ? "auto" : "hidden",
       horizontal: "auto",
       verticalScrollbarSize: 8,
-      horizontalScrollbarSize: 8,
-    },
+      horizontalScrollbarSize: 8
+    }
   });
   const width = state.dom.editorContainer.clientWidth;
   state.editor.layout({ width, height: newHeight });
@@ -615,7 +546,7 @@ function getCSSColor(varName, fallback) {
   if (typeof window === "undefined" || !document.documentElement) {
     console.warn(
       `getCSSColor: window or document.documentElement not available, using fallback for ${varName}`,
-      { varName, fallback },
+      { varName, fallback }
     );
     return fallback;
   }
@@ -624,11 +555,11 @@ function getCSSColor(varName, fallback) {
   if (!color) {
     console.warn(
       `getCSSColor: CSS variable not found, using fallback for ${varName}`,
-      { varName, fallback, computedStyle: style },
+      { varName, fallback, computedStyle: style }
     );
     return fallback;
   }
-  return color;
+  return rgbToHex(color);
 }
 function stripHash(color) {
   return color.startsWith("#") ? color.substring(1) : color;
@@ -637,28 +568,28 @@ function rgbToHex(rgb) {
   if (rgb.startsWith("#")) {
     return rgb;
   }
-  const match = rgb.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+  const match = rgb.match(/rgba?\(([\d.]+),\s*([\d.]+),\s*([\d.]+)/);
   if (!match) {
     console.warn(`rgbToHex: Unable to parse color "${rgb}"`);
     return rgb;
   }
-  const r = parseInt(match[1]).toString(16).padStart(2, "0");
-  const g = parseInt(match[2]).toString(16).padStart(2, "0");
-  const b = parseInt(match[3]).toString(16).padStart(2, "0");
+  const r = Math.round(parseFloat(match[1])).toString(16).padStart(2, "0");
+  const g = Math.round(parseFloat(match[2])).toString(16).padStart(2, "0");
+  const b = Math.round(parseFloat(match[3])).toString(16).padStart(2, "0");
   return `#${r}${g}${b}`;
 }
 function getAllSyntaxColorsFromDOM() {
   const lookup = document.getElementById("melbi-syntax-lookup");
   if (!lookup) {
     console.warn(
-      "getAllSyntaxColorsFromDOM: #melbi-syntax-lookup element not found",
+      "getAllSyntaxColorsFromDOM: #melbi-syntax-lookup element not found"
     );
     return {};
   }
   const code = lookup.querySelector("code");
   if (!code) {
     console.warn(
-      "getAllSyntaxColorsFromDOM: <code> element not found in #melbi-syntax-lookup",
+      "getAllSyntaxColorsFromDOM: <code> element not found in #melbi-syntax-lookup"
     );
     return {};
   }
@@ -670,7 +601,7 @@ function getAllSyntaxColorsFromDOM() {
     if (!color || color === "rgba(0, 0, 0, 0)" || color === "transparent") {
       console.warn(
         `getAllSyntaxColorsFromDOM: No valid color for .${className}`,
-        { className, computedColor: color },
+        { className, computedColor: color }
       );
       continue;
     }
@@ -693,40 +624,40 @@ function defineMonacoTheme(monaco2) {
     {
       token: "comment.line.melbi",
       foreground: stripHash(commentColor),
-      fontStyle: "italic",
+      fontStyle: "italic"
     },
     {
       token: "constant.language.boolean.melbi",
       foreground: stripHash(keywordColor),
-      fontStyle: "bold",
+      fontStyle: "bold"
     },
     {
       token: "constant.numeric.integer.melbi",
-      foreground: stripHash(numberColor),
+      foreground: stripHash(numberColor)
     },
     {
       token: "constant.numeric.float.melbi",
-      foreground: stripHash(numberColor),
+      foreground: stripHash(numberColor)
     },
     {
       token: "string.quoted.double.melbi",
-      foreground: stripHash(stringColor),
+      foreground: stripHash(stringColor)
     },
     {
       token: "string.quoted.double.format.melbi",
-      foreground: stripHash(stringColor),
+      foreground: stripHash(stringColor)
     },
     {
       token: "string.quoted.double.bytes.melbi",
-      foreground: stripHash(stringColor),
+      foreground: stripHash(stringColor)
     },
     { token: "entity.name.type.melbi", foreground: stripHash(typeColor) },
     {
       token: "variable.other.quoted.melbi",
-      foreground: stripHash(variableColor),
+      foreground: stripHash(variableColor)
     },
     { token: "variable.other.melbi", foreground: stripHash(fgColor) },
-    { token: "source.melbi", foreground: stripHash(fgColor) },
+    { token: "source.melbi", foreground: stripHash(fgColor) }
   ];
   monaco2.editor.defineTheme("melbi-jtd", {
     base: "vs",
@@ -736,8 +667,8 @@ function defineMonacoTheme(monaco2) {
       "editor.background": bgColor,
       "editor.foreground": fgColor,
       "editorLineNumber.foreground": stripHash(commentColor),
-      "editorLineNumber.activeForeground": stripHash(fgColor),
-    },
+      "editorLineNumber.activeForeground": stripHash(fgColor)
+    }
   });
 }
 async function setupEditor(monaco2) {
@@ -756,8 +687,7 @@ async function setupEditor(monaco2) {
     language: "melbi",
     minimap: { enabled: false },
     fontSize: 20,
-    fontFamily:
-      "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+    fontFamily: "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
     fontLigatures: true,
     theme: "melbi-jtd",
     automaticLayout: false,
@@ -769,7 +699,7 @@ async function setupEditor(monaco2) {
       vertical: "hidden",
       horizontal: "auto",
       verticalScrollbarSize: 8,
-      horizontalScrollbarSize: 8,
+      horizontalScrollbarSize: 8
     },
     overviewRulerLanes: 0,
     hideCursorInOverviewRuler: true,
@@ -778,8 +708,8 @@ async function setupEditor(monaco2) {
     fixedOverflowWidgets: true,
     padding: {
       top: 8,
-      bottom: 8,
-    },
+      bottom: 8
+    }
   });
   state.editor.onDidChangeModelContent((event) => {
     updateEditorHeight();
@@ -804,7 +734,7 @@ function handleModelContentChange(event) {
   const previousTree = state.currentTree;
   state.currentTree = state.parserInstance.parse(
     model.getValue(),
-    state.currentTree,
+    state.currentTree
   );
   if (previousTree) {
     previousTree.delete();
@@ -823,18 +753,18 @@ function updateSyntaxArtifacts(model) {
     state.currentTree,
     model,
     NODE_SCOPE_MAP,
-    DEFAULT_SCOPE,
+    DEFAULT_SCOPE
   );
   refreshTokensForModel(model);
   state.lastSyntaxDiagnostics = collectSyntaxDiagnostics(
     state.currentTree,
-    model,
+    model
   );
   updateDiagnostics();
 }
 function hasBlockingSyntaxErrors() {
   return state.lastSyntaxDiagnostics.some(
-    (diag) => (diag?.severity || "error").toLowerCase() === "error",
+    (diag) => (diag?.severity || "error").toLowerCase() === "error"
   );
 }
 function cancelScheduledAutoRun() {
@@ -869,7 +799,7 @@ function attemptAutoRun() {
 }
 async function runEvaluation({
   reason = "manual",
-  skipIfSyntaxErrors = false,
+  skipIfSyntaxErrors = false
 } = {}) {
   if (!state.editor) {
     return null;
@@ -1003,7 +933,8 @@ async function initializePlayground() {
     return;
   }
   await setupParser();
-  ensureEngine().catch(() => {});
+  ensureEngine().catch(() => {
+  });
   state._initialized = true;
 }
 if (typeof window !== "undefined") {

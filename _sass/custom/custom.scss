@@ -8,7 +8,6 @@
     --jtd-border-color: #{$border-color};
     --jtd-link-color: #{$link-color};
     --jtd-sidebar-color: #{$sidebar-color};
-    --melbi-input-background-color: #{darken($body-background-color, 1%)};
 }
 
 .site-logo {
@@ -27,12 +26,12 @@
 // Melbi Playground Styles
 #melbi-playground {
     max-width: 60rem; // 960px equivalent
-    margin: 0 auto $sp-6;
+    /* margin: 0 auto $sp-6; */
     /* background-color: $code-background-color; */
     /* background-color: $feedback-color; */
     background-color: $sidebar-color;
     border-right: $border $border-color;
-    border-left: $border $border-color;
+    border-bottom: $border $border-color;
     /* border: $border $border-color; */
     /* border-radius: $border-radius; */
     padding: $sp-3 $sp-4;
@@ -48,7 +47,7 @@
         height: 42px;
         border-radius: $border-radius;
         border: $border $border-color;
-        background-color: darken($body-background-color, 1%);
+        background-color: var(--melbi-input-background-color);
         box-sizing: border-box;
         overflow: hidden;
         box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.03);
@@ -57,7 +56,7 @@
     .melbi-output {
         margin-top: $sp-3;
         padding: $sp-2 $sp-3;
-        background-color: darken($body-background-color, 1%);
+        background-color: var(--melbi-input-background-color);
         border: $border $border-color;
         border-radius: $border-radius;
         font-family: $mono-font-family;

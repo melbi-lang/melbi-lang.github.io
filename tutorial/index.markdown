@@ -6,4 +6,6 @@ has_children: true
 permalink: /tutorial/
 ---
 
-This is the tutorial page 2.
+This is the tutorial!
+
+{:toc}
