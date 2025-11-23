@@ -1,17 +1,5 @@
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
-    if (
-        localStorage.theme === "dark" ||
-        (!("theme" in localStorage) &&
-            window.matchMedia("(prefers-color-scheme: dark)").matches)
-    ) {
-        document.documentElement.setAttribute("data-theme", "dark");
-        jtd.setTheme("dark");
-    } else {
-        document.documentElement.setAttribute("data-theme", "light");
-        jtd.setTheme("light");
-    }
-
     function setTheme(theme) {
         var cssFile = document.querySelector('[rel="stylesheet"]');
         cssFile.setAttribute(
@@ -27,6 +15,34 @@
         );
     }
 
+    (() => {
+        const currentTheme = jtd.getTheme();
+        console.log("Current theme:", currentTheme, {
+            css: document
+                .querySelector('[rel="stylesheet"]')
+                .getAttribute("href"),
+        });
+        if (
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) &&
+                window.matchMedia("(prefers-color-scheme: dark)").matches)
+        ) {
+            document.documentElement.setAttribute("data-theme", "dark");
+            if (currentTheme !== "dark") {
+                console.log("Setting theme to dark");
+                setTheme("dark");
+            }
+        } else {
+            document.documentElement.setAttribute("data-theme", "light");
+            if (currentTheme !== "light") {
+                console.log("Setting theme to light");
+                setTheme("light");
+            }
+        }
+    })();
+</script>
+
+<script>
     function toggleTheme() {
         const html = document.documentElement;
         if (html.getAttribute("data-theme") === "dark") {

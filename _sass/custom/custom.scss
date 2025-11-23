@@ -11,6 +11,19 @@
     --melbi-input-background-color: #{darken($body-background-color, 1%)};
 }
 
+.site-logo {
+    width: 3rem;
+    height: 2rem;
+    display: block;
+}
+
+.site-name {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $link-color;
+    display: block;
+}
+
 // Melbi Playground Styles
 #melbi-playground {
     max-width: 60rem; // 960px equivalent
@@ -73,10 +86,23 @@
     }
 }
 
-[data-theme="dark"] .dark-hidden {
+.light-hidden {
     display: none;
 }
+.dark-hidden {
+    display: block;
+}
 
-[data-theme="light"] .light-hidden {
-    display: none;
+[data-theme="dark"] {
+    .dark-hidden {
+        display: none;
+    }
+    .light-hidden {
+        display: block;
+    }
+}
+
+.icon {
+    width: $sp-5;
+    height: $sp-5;
 }
