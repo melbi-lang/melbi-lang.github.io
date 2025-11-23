@@ -1,0 +1,19 @@
+{
+  "name": "playground-worker",
+  "type": "module",
+  "collaborators": [
+    "Nilton Volpato <nilton@volpa.to>"
+  ],
+  "version": "0.1.0",
+  "license": "MIT OR Apache-2.0",
+  "files": [
+    "playground_worker_bg.wasm",
+    "playground_worker.js",
+    "playground_worker.d.ts"
+  ],
+  "main": "playground_worker.js",
+  "types": "playground_worker.d.ts",
+  "sideEffects": [
+    "./snippets/*"
+  ]
+}
