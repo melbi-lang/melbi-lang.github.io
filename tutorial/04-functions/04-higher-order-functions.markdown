@@ -2,7 +2,7 @@
 title: Higher-Order Functions
 layout: tutorial
 parent: Functions
-nav_order: 13
+nav_order: 3
 permalink: /tutorial/functions/higher-order-functions/
 ---
 
