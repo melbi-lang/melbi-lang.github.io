@@ -1,5 +1,6 @@
 ---
 layout: table_wrappers
+enable_playground: true
 ---
 
 <!DOCTYPE html>
@@ -55,5 +56,34 @@ layout: table_wrappers
   {% if site.mermaid %}
     {% include components/mermaid.html %}
   {% endif %}
+
+  <script>
+    jtd.onReady(function() {
+      var melbiCodeBlocks = document.querySelectorAll('.language-melbi');
+
+      melbiCodeBlocks.forEach(function(codeBlock) {
+        var container = codeBlock.closest('.highlighter-rouge');
+        if (!container) return;
+
+        var playButton = document.createElement('button');
+        playButton.type = 'button';
+        playButton.ariaLabel = 'Load code in playground';
+        playButton.className = 'playground-button';
+        playButton.innerHTML = '<i data-lucide="play"></i>';
+        container.append(playButton);
+
+        playButton.addEventListener('click', function() {
+          var code = codeBlock.innerText.trim();
+          if (window.editor) {
+            window.editor.setValue(code);
+          }
+        });
+      });
+
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
 </body>
 </html>

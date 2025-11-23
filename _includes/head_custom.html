@@ -39,26 +39,25 @@
     });
 </script>
 
+{% if layout.enable_playground %}
 <script
     type="module"
     crossorigin
     src="https://cdn.jsdelivr.net/npm/web-tree-sitter@0.25.10/tree-sitter.js"
 ></script>
-
 <script
     type="module"
     crossorigin
     src="https://cdn.jsdelivr.net/npm/monaco-editor@0.54.0/+esm"
 ></script>
-
 <script
     type="module"
     crossorigin
     src="/playground/wasm/playground_worker.js"
 ></script>
-
 <script
     type="module"
     crossorigin
     src="/playground/assets/main-DnnnS2ME.js"
 ></script>
+{% endif %}

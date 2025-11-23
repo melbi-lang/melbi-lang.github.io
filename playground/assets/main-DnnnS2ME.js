@@ -682,35 +682,38 @@ async function setupEditor(monaco2) {
       monaco2.editor.setTheme("melbi-jtd");
     }
   });
-  state.editor = monaco2.editor.create(state.dom.editorContainer, {
-    value: (window.initialCode || "").replace(/\n$/, ""),
-    language: "melbi",
-    minimap: { enabled: false },
-    fontSize: 20,
-    fontFamily: "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
-    fontLigatures: true,
-    theme: "melbi-jtd",
-    automaticLayout: false,
-    lineNumbers: "off",
-    glyphMargin: false,
-    folding: false,
-    renderLineHighlight: "none",
-    scrollbar: {
-      vertical: "hidden",
-      horizontal: "auto",
-      verticalScrollbarSize: 8,
-      horizontalScrollbarSize: 8
-    },
-    overviewRulerLanes: 0,
-    hideCursorInOverviewRuler: true,
-    scrollBeyondLastLine: false,
-    wordWrap: "on",
-    fixedOverflowWidgets: true,
-    padding: {
-      top: 8,
-      bottom: 8
+  state.editor = window.editor = monaco2.editor.create(
+    state.dom.editorContainer,
+    {
+      value: (window.initialCode || "").replace(/\n$/, ""),
+      language: "melbi",
+      minimap: { enabled: false },
+      fontSize: 20,
+      fontFamily: "'JetBrains Mono', 'Fira Code', 'SF Mono', 'Cascadia Code', 'Consolas', monospace",
+      fontLigatures: true,
+      theme: "melbi-jtd",
+      automaticLayout: false,
+      lineNumbers: "off",
+      glyphMargin: false,
+      folding: false,
+      renderLineHighlight: "none",
+      scrollbar: {
+        vertical: "hidden",
+        horizontal: "auto",
+        verticalScrollbarSize: 8,
+        horizontalScrollbarSize: 8
+      },
+      overviewRulerLanes: 0,
+      hideCursorInOverviewRuler: true,
+      scrollBeyondLastLine: false,
+      wordWrap: "on",
+      fixedOverflowWidgets: true,
+      padding: {
+        top: 8,
+        bottom: 8
+      }
     }
-  });
+  );
   state.editor.onDidChangeModelContent((event) => {
     updateEditorHeight();
     handleModelContentChange(event);
