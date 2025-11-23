@@ -1,23 +1,14 @@
 // Export just-the-docs theme colors as CSS custom properties for Monaco editor
 :root {
-    // Base colors
-    --jtd-body-background-color: #{darken($body-background-color, 1%)};
+    // Base colors (syntax highlighting colors are read from .highlight classes in DOM)
+    --jtd-body-background-color: #{$body-background-color};
     --jtd-body-text-color: #{$body-text-color};
     --jtd-body-heading-color: #{$body-heading-color};
     --jtd-code-background-color: #{$code-background-color};
     --jtd-border-color: #{$border-color};
     --jtd-link-color: #{$link-color};
     --jtd-sidebar-color: #{$sidebar-color};
-
-    // Syntax highlighting colors - OneLightJekyll (light mode)
-    --jtd-syntax-foreground: #383942;
-    --jtd-syntax-comment: #9fa0a6;
-    --jtd-syntax-keyword: #a625a4;
-    --jtd-syntax-string: #50a04f;
-    --jtd-syntax-number: #986801;
-    --jtd-syntax-function: #4078f2;
-    --jtd-syntax-type: #c18401;
-    --jtd-syntax-variable: #e45649;
+    --melbi-input-background-color: #{darken($body-background-color, 1%)};
 }
 
 // Melbi Playground Styles

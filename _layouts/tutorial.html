@@ -33,6 +33,8 @@ layout: table_wrappers
                 <div class="melbi-editor"></div>
                 <div class="melbi-output">Waiting for input…</div>
             </div>
+            <!-- Hidden element for Monaco to extract syntax highlighting colors from just-the-docs theme -->
+            <pre style="display: none;" id="melbi-syntax-lookup" class="highlight"><code><span class="c"></span><span class="k"></span><span class="m"></span><span class="s"></span><span class="kt"></span><span class="nv"></span><span class="n"></span><span class="nf"></span><span class="o"></span><span class="p"></span></code></pre>
 
           {% if site.heading_anchors != false %}
             {% include vendor/anchor_headings.html html=content beforeHeading="true" anchorBody="<svg viewBox=\"0 0 16 16\" aria-hidden=\"true\"><use xlink:href=\"#svg-link\"></use></svg>" anchorClass="anchor-heading" anchorAttrs="aria-labelledby=\"%html_id%\"" %}
