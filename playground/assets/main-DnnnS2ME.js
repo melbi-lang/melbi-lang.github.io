@@ -683,7 +683,7 @@ async function setupEditor(monaco2) {
     }
   });
   state.editor = monaco2.editor.create(state.dom.editorContainer, {
-    value: "",
+    value: (window.initialCode || "").replace(/\n$/, ""),
     language: "melbi",
     minimap: { enabled: false },
     fontSize: 20,

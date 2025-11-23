@@ -4,6 +4,8 @@ layout: tutorial
 parent: Basics
 nav_order: 1
 permalink: /tutorial/basics/calculator/
+code_sample: |
+  1 + 2
 ---
 
 # Melbi as a Calculator
@@ -38,7 +40,11 @@ Floating point numbers are useful when you need to perform calculations that inv
 
 ## Operations with Different Types
 
-If you try `1 + 1.0` you will get an error because you're trying to add two different types of numbers. Melbi prefers to be explicit since implicit conversions can be surprising and lead to unexpected results which can lead to bugs.
+If you try something like
+```melbi
+1 + 1.0
+```
+you will get an error because you're trying to add two different types of numbers. Melbi prefers to be explicit since implicit conversions can be surprising and lead to unexpected results which can lead to bugs.
 
 ## Numeric Operators
 

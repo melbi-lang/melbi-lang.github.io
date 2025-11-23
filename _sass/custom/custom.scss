@@ -25,6 +25,9 @@
 
 // Melbi Playground Styles
 #melbi-playground {
+    position: sticky;
+    top: 0;
+    z-index: 100;
     max-width: 60rem; // 960px equivalent
     /* margin: 0 auto $sp-6; */
     /* background-color: $code-background-color; */
@@ -69,8 +72,7 @@
         box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.03);
 
         .type {
-            /* color: $grey-dk-000; */
-            color: $feedback-color;
+            color: $grey-dk-000;
             font-size: $font-size-2; // 0.6875rem (11px)
             margin-left: $sp-2;
         }
