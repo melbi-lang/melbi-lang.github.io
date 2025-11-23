@@ -10,7 +10,7 @@ aux_links:
   - [
       "<i data-lucide='sun' class='light-hidden'></i>
       <i data-lucide='moon' class='dark-hidden'></i>",
-      "javascript:void(0)",
+      "javascript:toggleTheme()",
     ]
 
 domain: "melbi.dev"

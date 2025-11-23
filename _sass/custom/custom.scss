@@ -72,3 +72,11 @@
         font-family: $mono-font-family;
     }
 }
+
+[data-theme="dark"] .dark-hidden {
+    display: none;
+}
+
+[data-theme="light"] .light-hidden {
+    display: none;
+}

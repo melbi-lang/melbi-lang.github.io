@@ -153,9 +153,9 @@
                 (!("theme" in localStorage) &&
                     window.matchMedia("(prefers-color-scheme: dark)").matches)
             ) {
-                document.documentElement.classList.add("dark");
+                document.documentElement.setAttribute("data-theme", "dark");
             } else {
-                document.documentElement.classList.remove("dark");
+                document.documentElement.setAttribute("data-theme", "light");
             }
         </script>
     </head>
@@ -690,11 +690,12 @@ user.country <span class="token-punctuation">==</span> <span class="token-string
             const toggleMobile = document.getElementById("theme-toggle-mobile");
 
             function toggleTheme() {
-                if (document.documentElement.classList.contains("dark")) {
-                    document.documentElement.classList.remove("dark");
+                const html = document.documentElement;
+                if (html.getAttribute("data-theme") === "dark") {
+                    html.setAttribute("data-theme", "light");
                     localStorage.theme = "light";
                 } else {
-                    document.documentElement.classList.add("dark");
+                    html.setAttribute("data-theme", "dark");
                     localStorage.theme = "dark";
                 }
             }
