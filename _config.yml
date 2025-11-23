@@ -21,7 +21,7 @@ url: "https://melbi.dev"
 baseurl: ""
 github_username: melbi-lang
 
-color_scheme: dark
+color_scheme: light
 markdown: kramdown
 theme: just-the-docs
 plugins:

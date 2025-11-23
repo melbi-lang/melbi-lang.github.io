@@ -1,0 +1,76 @@
+// Export just-the-docs theme colors as CSS custom properties for Monaco editor
+:root {
+    // Base colors
+    --jtd-body-background-color: #{darken($body-background-color, 1%)};
+    --jtd-body-text-color: #{$body-text-color};
+    --jtd-body-heading-color: #{$body-heading-color};
+    --jtd-code-background-color: #{$code-background-color};
+    --jtd-border-color: #{$border-color};
+    --jtd-link-color: #{$link-color};
+    --jtd-sidebar-color: #{$sidebar-color};
+
+    // Syntax highlighting colors - OneLightJekyll (light mode)
+    --jtd-syntax-foreground: #383942;
+    --jtd-syntax-comment: #9fa0a6;
+    --jtd-syntax-keyword: #a625a4;
+    --jtd-syntax-string: #50a04f;
+    --jtd-syntax-number: #986801;
+    --jtd-syntax-function: #4078f2;
+    --jtd-syntax-type: #c18401;
+    --jtd-syntax-variable: #e45649;
+}
+
+// Melbi Playground Styles
+#melbi-playground {
+    max-width: 60rem; // 960px equivalent
+    margin: 0 auto $sp-6;
+    /* background-color: $code-background-color; */
+    background-color: $feedback-color;
+    border: $border $border-color;
+    border-radius: $border-radius;
+    padding: $sp-3 $sp-4;
+    box-shadow:
+        0 1px 2px rgba(0, 0, 0, 0.12),
+        0 3px 10px rgba(0, 0, 0, 0.08);
+
+    .melbi-editor {
+        width: 100%;
+        height: 42px;
+        border-radius: $border-radius;
+        border: $border $border-color;
+        background-color: darken($body-background-color, 1%);
+        box-sizing: border-box;
+        overflow: hidden;
+        box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .melbi-output {
+        margin-top: $sp-3;
+        padding: $sp-2 $sp-3;
+        background-color: darken($body-background-color, 1%);
+        border: $border $border-color;
+        border-radius: $border-radius;
+        font-family: $mono-font-family;
+        font-size: 1.25rem; // 20px
+        color: $body-text-color;
+        white-space: pre-wrap;
+        word-break: break-word;
+        display: flex;
+        align-items: center;
+        box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.03);
+
+        .type {
+            color: $grey-dk-000;
+            font-size: $font-size-2; // 0.6875rem (11px)
+            margin-left: $sp-2;
+        }
+    }
+
+    .melbi-timing {
+        text-align: right;
+        padding-right: 2ex;
+        font-size: $font-size-1; // 0.5625rem (9px)
+        color: $grey-dk-000;
+        font-family: $mono-font-family;
+    }
+}
