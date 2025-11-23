@@ -6,20 +6,20 @@ description: >-
   rules safely. It\'s built for speed and effortless sandboxing.
 
 aux_links:
+  - ["<i data-lucide='github'></i>", "https://github.com/melbi-lang/melbi"]
   - [
-      "<i data-lucide='github' class='w-5 h-5'></i>",
-      "https://github.com/melbi-lang/melbi",
+      "<i data-lucide='sun' class='light-hidden'></i>
+      <i data-lucide='moon' class='dark-hidden'></i>",
+      "javascript:void(0)",
     ]
-  # - [
-  #     "<i data-lucide='sun' class='w-5 h-5 hidden dark:block'></i>
-  #     <i data-lucide='moon' class='w-5 h-5 block dark:hidden'></i>",
-  #     "javascript:void(0)",
-  #   ]
 
 domain: "melbi.dev"
 url: "https://melbi.dev"
 baseurl: ""
 github_username: melbi-lang
+
+sass:
+  style: compressed
 
 color_scheme: light
 markdown: kramdown

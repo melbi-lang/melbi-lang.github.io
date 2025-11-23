@@ -16,13 +16,19 @@
     max-width: 60rem; // 960px equivalent
     margin: 0 auto $sp-6;
     /* background-color: $code-background-color; */
-    background-color: $feedback-color;
-    border: $border $border-color;
-    border-radius: $border-radius;
+    /* background-color: $feedback-color; */
+    background-color: $sidebar-color;
+    border-right: $border $border-color;
+    border-left: $border $border-color;
+    /* border: $border $border-color; */
+    /* border-radius: $border-radius; */
     padding: $sp-3 $sp-4;
-    box-shadow:
+    /* box-shadow:
         0 1px 2px rgba(0, 0, 0, 0.12),
-        0 3px 10px rgba(0, 0, 0, 0.08);
+        0 3px 10px rgba(0, 0, 0, 0.08); */
+    box-shadow:
+        2px 2px 2px rgba(0, 0, 0, 0.1),
+        5px 5px 4px rgba(0, 0, 0, 0.02);
 
     .melbi-editor {
         width: 100%;
@@ -51,7 +57,8 @@
         box-shadow: inset 0 3px 3px rgba(0, 0, 0, 0.03);
 
         .type {
-            color: $grey-dk-000;
+            /* color: $grey-dk-000; */
+            color: $feedback-color;
             font-size: $font-size-2; // 0.6875rem (11px)
             margin-left: $sp-2;
         }
