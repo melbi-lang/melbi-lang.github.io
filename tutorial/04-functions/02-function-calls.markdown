@@ -127,11 +127,10 @@ The output type of `Abs` matches the input type of `Sqrt`, so they fit together!
 For readability, you can use `where` bindings:
 
 ```melbi
-result where {
+root where {
   negative = -16.0,
   positive = Math.Abs(negative),
   root = Math.Sqrt(positive),
-  result = root
 }
 ```
 
