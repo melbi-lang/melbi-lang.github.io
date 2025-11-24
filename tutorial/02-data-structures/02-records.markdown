@@ -68,10 +68,10 @@ Records can mix different types in their fields (unlike arrays!):
 
 ```melbi
 {
-  name = "Bob",
-  age = 25,
-  score = 95.5,
-  active = true
+    name = "Bob",
+    age = 25,
+    score = 95.5,
+    active = true,
 }
 ```
 
@@ -83,12 +83,12 @@ Records can contain other records:
 
 ```melbi
 {
-  name = "Alice",
-  address = {
-    street = "123 Main St",
-    city = "Springfield",
-    zip = "12345"
-  }
+    name = "Alice",
+    address = {
+        street = "123 Main St",
+        city = "Springfield",
+        zip = "12345",
+    },
 }
 ```
 
@@ -96,13 +96,13 @@ Access nested fields with multiple dots:
 
 ```melbi
 person.address.city where {
-  person = {
-    name = "Alice",
-    address = {
-      street = "123 Main St",
-      city = "Springfield"
-    }
-  }
+    person = {
+        name = "Alice",
+        address = {
+            street = "123 Main St",
+            city = "Springfield",
+        },
+    },
 }
 ```
 
@@ -114,15 +114,15 @@ Records work beautifully with where bindings:
 
 ```melbi
 greeting where {
-  user = { name = "Alice", role = "admin" },
-  greeting = f"Hello, {user.name}! You are an {user.role}."
+    user = { name = "Alice", role = "admin" },
+    greeting = f"Hello, { user.name }! You are an { user.role }.",
 }
 ```
 
 ```melbi
 total where {
-  item = { name = "Widget", price = 29.99, quantity = 3 },
-  total = item.price * item.quantity
+    item = { name = "Widget", price = 29.99, quantity = 3 },
+    total = item.price * item.quantity,
 }
 ```
 
@@ -132,13 +132,13 @@ total where {
 
 ```melbi
 display_name where {
-  user = {
-    first_name = "John",
-    last_name = "Doe",
-    username = "johnd",
-    email = "john@example.com"
-  },
-  display_name = f"{user.first_name} {user.last_name} (@{user.username})"
+    user = {
+        first_name = "John",
+        last_name = "Doe",
+        username = "johnd",
+        email = "john@example.com",
+    },
+    display_name = f"{ user.first_name } { user.last_name } (@{ user.username })",
 }
 ```
 
@@ -146,14 +146,14 @@ display_name where {
 
 ```melbi
 description where {
-  product = {
-    name = "Laptop",
-    brand = "TechCorp",
-    price = 999.99,
-    in_stock = true
-  },
-  status = if product.in_stock then "Available" else "Out of stock",
-  description = f"{product.brand} {product.name} - ${product.price} - {status}"
+    product = {
+        name = "Laptop",
+        brand = "TechCorp",
+        price = 999.99,
+        in_stock = true,
+    },
+    status = if product.in_stock then "Available" else "Out of stock",
+    description = f"{ product.brand } { product.name } - ${ product.price } - { status }",
 }
 ```
 
@@ -161,14 +161,14 @@ description where {
 
 ```melbi
 full_url where {
-  config = {
-    host = "api.example.com",
-    port = 443,
-    use_ssl = true,
-    api_version = "v2"
-  },
-  protocol = if config.use_ssl then "https" else "http",
-  full_url = f"{protocol}://{config.host}:{config.port}/{config.api_version}"
+    config = {
+        host = "api.example.com",
+        port = 443,
+        use_ssl = true,
+        api_version = "v2",
+    },
+    protocol = if config.use_ssl then "https" else "http",
+    full_url = f"{ protocol }://{ config.host }:{ config.port }/{ config.api_version }",
 }
 ```
 
@@ -176,14 +176,14 @@ full_url where {
 
 ```melbi
 distance_info where {
-  location = {
-    x = 10,
-    y = 20,
-    label = "Home",
-    visited = true
-  },
-  distance = (location.x ^ 2 + location.y ^ 2) ^ 0.5,
-  distance_info = f"{location.label}: {distance} units away"
+    location = {
+        x = 10,
+        y = 20,
+        label = "Home",
+        visited = true,
+    },
+    distance = (location.x ^ 2 + location.y ^ 2) ^ 0.5,
+    distance_info = f"{ location.label }: { distance } units away",
 }
 ```
 
@@ -193,12 +193,12 @@ You can have arrays where each element is a record:
 
 ```melbi
 first_user.name where {
-  users = [
-    { name = "Alice", age = 30 },
-    { name = "Bob", age = 25 },
-    { name = "Charlie", age = 35 }
-  ],
-  first_user = users[0]
+    users = [
+        { name = "Alice", age = 30 },
+        { name = "Bob", age = 25 },
+        { name = "Charlie", age = 35 },
+    ],
+    first_user = users[0],
 }
 ```
 
@@ -206,10 +206,10 @@ Or access directly:
 
 ```melbi
 users[1].age where {
-  users = [
-    { name = "Alice", age = 30 },
-    { name = "Bob", age = 25 }
-  ]
+    users = [
+        { name = "Alice", age = 30 },
+        { name = "Bob", age = 25 },
+    ],
 }
 ```
 
@@ -221,21 +221,21 @@ Records can have arrays as field values:
 
 ```melbi
 first_score where {
-  student = {
-    name = "Alice",
-    scores = [95, 87, 92],
-    enrolled = true
-  },
-  first_score = student.scores[0]
+    student = {
+        name = "Alice",
+        scores = [95, 87, 92],
+        enrolled = true,
+    },
+    first_score = student.scores[0],
 }
 ```
 
 ```melbi
 colors.primary[0] where {
-  colors = {
-    primary = ["#FF0000", "#00FF00", "#0000FF"],
-    secondary = ["#FFFF00", "#FF00FF", "#00FFFF"]
-  }
+    colors = {
+        primary = ["#FF0000", "#00FF00", "#0000FF"],
+        secondary = ["#FFFF00", "#FF00FF", "#00FFFF"],
+    },
 }
 ```
 
@@ -245,14 +245,14 @@ colors.primary[0] where {
 
 ```melbi
 is_valid where {
-  form = {
-    email = "user@example.com",
-    age = 25,
-    agreed = true
-  },
-  has_email = "@" in form.email,
-  old_enough = form.age >= 18,
-  is_valid = has_email and old_enough and form.agreed
+    form = {
+        email = "user@example.com",
+        age = 25,
+        agreed = true,
+    },
+    has_email = "@" in form.email,
+    old_enough = form.age >= 18,
+    is_valid = has_email and old_enough and form.agreed,
 }
 ```
 
@@ -260,14 +260,14 @@ is_valid where {
 
 ```melbi
 invoice_total where {
-  invoice = {
-    subtotal = 100.00,
-    tax_rate = 0.08,
-    shipping = 10.00,
-    discount = 5.00
-  },
-  tax = invoice.subtotal * invoice.tax_rate,
-  invoice_total = invoice.subtotal + tax + invoice.shipping - invoice.discount
+    invoice = {
+        subtotal = 100.00,
+        tax_rate = 0.08,
+        shipping = 10.00,
+        discount = 5.00,
+    },
+    tax = invoice.subtotal * invoice.tax_rate,
+    invoice_total = invoice.subtotal + tax + invoice.shipping - invoice.discount,
 }
 ```
 
@@ -275,14 +275,14 @@ invoice_total where {
 
 ```melbi
 can_level_up where {
-  character = {
-    name = "Hero",
-    level = 5,
-    xp = 1000,
-    xp_required = 1000,
-    gold = 500
-  },
-  can_level_up = character.xp >= character.xp_required
+    character = {
+        name = "Hero",
+        level = 5,
+        xp = 1000,
+        xp_required = 1000,
+        gold = 500,
+    },
+    can_level_up = character.xp >= character.xp_required,
 }
 ```
 
@@ -290,18 +290,18 @@ can_level_up where {
 
 ```melbi
 message where {
-  response = {
-    status = 200,
-    success = true,
-    data = {
-      user_id = 12345,
-      username = "alice"
+    response = {
+        status = 200,
+        success = true,
+        data = {
+            user_id = 12345,
+            username = "alice",
+        },
+        timestamp = "2024-11-23T10:30:00Z",
     },
-    timestamp = "2024-11-23T10:30:00Z"
-  },
-  message = if response.success 
-    then f"User {response.data.username} logged in"
-    else "Login failed"
+    message = if response.success
+    then f"User { response.data.username } logged in"
+    else "Login failed",
 }
 ```
 

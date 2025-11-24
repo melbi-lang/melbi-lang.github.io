@@ -82,17 +82,17 @@ Arrays work great with where bindings:
 
 ```melbi
 best_score where {
-  scores = [95, 87, 92, 78, 88],
-  best_score = scores[0]
+    scores = [95, 87, 92, 78, 88],
+    best_score = scores[0],
 }
 ```
 
 ```melbi
 message where {
-  names = ["Alice", "Bob", "Charlie"],
-  first = names[0],
-  last = names[2],
-  message = f"{first} and {last} are here"
+    names = ["Alice", "Bob", "Charlie"],
+    first = names[0],
+    last = names[2],
+    message = f"{ first } and { last } are here",
 }
 ```
 
@@ -148,7 +148,7 @@ Access nested elements with multiple brackets:
 
 ```melbi
 grid[0][1] where {
-  grid = [[1, 2], [3, 4], [5, 6]]
+    grid = [[1, 2], [3, 4], [5, 6]],
 }
 ```
 
@@ -162,18 +162,18 @@ Think of it like a spreadsheet - `grid[0]` gets you the first row, then `[1]` ge
 
 ```melbi
 average where {
-  scores = [95, 87, 92, 78, 88],
-  total = scores[0] + scores[1] + scores[2] + scores[3] + scores[4],
-  count = 5,
-  average = total / count
+    scores = [95, 87, 92, 78, 88],
+    total = scores[0] + scores[1] + scores[2] + scores[3] + scores[4],
+    count = 5,
+    average = total / count,
 }
 ```
 
 ### Email list
 
 ```melbi
-f"Sending to: {emails[0]}, {emails[1]}, and {emails[2]}" where {
-  emails = ["alice@example.com", "bob@example.com", "charlie@example.com"]
+f"Sending to: { emails[0] }, { emails[1] }, and { emails[2] }" where {
+    emails = ["alice@example.com", "bob@example.com", "charlie@example.com"],
 }
 ```
 
@@ -181,9 +181,9 @@ f"Sending to: {emails[0]}, {emails[1]}, and {emails[2]}" where {
 
 ```melbi
 today where {
-  days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-  day_index = 3,
-  today = days[day_index]
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    day_index = 3,
+    today = days[day_index],
 }
 ```
 
@@ -191,8 +191,8 @@ today where {
 
 ```melbi
 primary_color where {
-  palette = ["#FF5733", "#33FF57", "#3357FF", "#F333FF"],
-  primary_color = palette[0]
+    palette = ["#FF5733", "#33FF57", "#3357FF", "#F333FF"],
+    primary_color = palette[0],
 }
 ```
 
@@ -233,16 +233,16 @@ Perfect for checking permissions, valid options, or blacklists:
 ```melbi
 if role in admin_roles then "Access granted" else "Access denied"
 where {
-  role = "moderator",
-  admin_roles = ["admin", "super_admin", "moderator"]
+    role = "moderator",
+    admin_roles = ["admin", "super_admin", "moderator"],
 }
 ```
 
 ```melbi
 if extension in allowed then "Upload accepted" else "Invalid file type"
 where {
-  extension = ".jpg",
-  allowed = [".jpg", ".png", ".gif", ".webp"]
+    extension = ".jpg",
+    allowed = [".jpg", ".png", ".gif", ".webp"],
 }
 ```
 
@@ -252,9 +252,9 @@ where {
 
 ```melbi
 selected_item where {
-  menu = ["New", "Open", "Save", "Exit"],
-  choice = 2,
-  selected_item = menu[choice]
+    menu = ["New", "Open", "Save", "Exit"],
+    choice = 2,
+    selected_item = menu[choice],
 }
 ```
 
@@ -262,9 +262,9 @@ selected_item where {
 
 ```melbi
 price where {
-  tiers = [9.99, 19.99, 49.99, 99.99],
-  tier_index = 1,
-  price = tiers[tier_index]
+    tiers = [9.99, 19.99, 49.99, 99.99],
+    tier_index = 1,
+    price = tiers[tier_index],
 }
 ```
 
@@ -272,9 +272,9 @@ price where {
 
 ```melbi
 is_success where {
-  success_codes = [200, 201, 204],
-  response_code = 200,
-  is_success = response_code in success_codes
+    success_codes = [200, 201, 204],
+    response_code = 200,
+    is_success = response_code in success_codes,
 }
 ```
 
@@ -282,11 +282,11 @@ is_success where {
 
 ```melbi
 distance where {
-  point1 = [0, 0],
-  point2 = [3, 4],
-  dx = point2[0] - point1[0],
-  dy = point2[1] - point1[1],
-  distance = (dx ^ 2 + dy ^ 2) ^ 0.5
+    point1 = [0, 0],
+    point2 = [3, 4],
+    dx = point2[0] - point1[0],
+    dy = point2[1] - point1[1],
+    distance = (dx ^ 2 + dy ^ 2) ^ 0.5,
 }
 ```
 

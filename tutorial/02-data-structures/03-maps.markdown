@@ -45,14 +45,14 @@ Records use dot notation (`.`), maps use brackets (`[]`) like arrays.
 Maps look similar to records, but use colons (`:`) instead of equals signs (`=`):
 
 ```melbi
-{ "apple": 1.50, "banana": 0.75, "orange": 1.25 }
+{"apple": 1.50, "banana": 0.75, "orange": 1.25}
 ```
 
 Access values using brackets:
 
 ```melbi
 prices["apple"] where {
-  prices = { "apple": 1.50, "banana": 0.75, "orange": 1.25 }
+    prices = {"apple": 1.50, "banana": 0.75, "orange": 1.25},
 }
 ```
 
@@ -76,8 +76,8 @@ The real power of maps is looking up values dynamically:
 
 ```melbi
 prices[fruit] where {
-  prices = { "apple": 1.50, "banana": 0.75, "orange": 1.25 },
-  fruit = "banana"
+    prices = {"apple": 1.50, "banana": 0.75, "orange": 1.25},
+    fruit = "banana",
 }
 ```
 
@@ -93,9 +93,9 @@ Maps can use different types as keys:
 
 ```melbi
 {
-  "en": "Hello",
-  "es": "Hola",
-  "fr": "Bonjour"
+    "en": "Hello",
+    "es": "Hola",
+    "fr": "Bonjour",
 }
 ```
 
@@ -103,17 +103,17 @@ Maps can use different types as keys:
 
 ```melbi
 {
-  1: "Monday",
-  2: "Tuesday",
-  3: "Wednesday"
+    1: "Monday",
+    2: "Tuesday",
+    3: "Wednesday",
 }
 ```
 
 ```melbi
 {
-  404: "Not Found",
-  500: "Server Error",
-  200: "OK"
+    404: "Not Found",
+    500: "Server Error",
+    200: "OK",
 }
 ```
 
@@ -127,7 +127,7 @@ Use the `in` operator:
 
 ```melbi
 "apple" in prices where {
-  prices = { "apple": 1.50, "banana": 0.75 }
+    prices = {"apple": 1.50, "banana": 0.75},
 }
 ```
 
@@ -135,7 +135,7 @@ This is `true` - "apple" is a key in the map.
 
 ```melbi
 "grape" in prices where {
-  prices = { "apple": 1.50, "banana": 0.75 }
+    prices = {"apple": 1.50, "banana": 0.75},
 }
 ```
 
@@ -151,14 +151,14 @@ Perfect for checking if something is valid or available!
 
 ```melbi
 total where {
-  prices = {
-    "laptop": 999.99,
-    "mouse": 25.99,
-    "keyboard": 79.99
-  },
-  item = "laptop",
-  quantity = 2,
-  total = prices[item] * quantity
+    prices = {
+        "laptop": 999.99,
+        "mouse": 25.99,
+        "keyboard": 79.99,
+    },
+    item = "laptop",
+    quantity = 2,
+    total = prices[item] * quantity,
 }
 ```
 
@@ -166,13 +166,13 @@ total where {
 
 ```melbi
 translations[lang] where {
-  translations = {
-    "en": "Welcome",
-    "es": "Bienvenido",
-    "fr": "Bienvenue",
-    "de": "Willkommen"
-  },
-  lang = "es"
+    translations = {
+        "en": "Welcome",
+        "es": "Bienvenido",
+        "fr": "Bienvenue",
+        "de": "Willkommen",
+    },
+    lang = "es",
 }
 ```
 
@@ -180,14 +180,14 @@ translations[lang] where {
 
 ```melbi
 message where {
-  status_messages = {
-    200: "Success",
-    404: "Not Found",
-    500: "Server Error",
-    403: "Forbidden"
-  },
-  status_code = 404,
-  message = status_messages[status_code]
+    status_messages = {
+        200: "Success",
+        404: "Not Found",
+        500: "Server Error",
+        403: "Forbidden",
+    },
+    status_code = 404,
+    message = status_messages[status_code],
 }
 ```
 
@@ -195,14 +195,14 @@ message where {
 
 ```melbi
 permission_level where {
-  permissions = {
-    "admin": 100,
-    "moderator": 50,
-    "user": 10,
-    "guest": 1
-  },
-  role = "moderator",
-  permission_level = permissions[role]
+    permissions = {
+        "admin": 100,
+        "moderator": 50,
+        "user": 10,
+        "guest": 1,
+    },
+    role = "moderator",
+    permission_level = permissions[role],
 }
 ```
 
@@ -214,11 +214,11 @@ Map values can be any type - numbers, strings, arrays, records, or even other ma
 
 ```melbi
 categories["fruits"] where {
-  categories = {
-    "fruits": ["apple", "banana", "orange"],
-    "vegetables": ["carrot", "broccoli", "spinach"],
-    "dairy": ["milk", "cheese", "yogurt"]
-  }
+    categories = {
+        "fruits": ["apple", "banana", "orange"],
+        "vegetables": ["carrot", "broccoli", "spinach"],
+        "dairy": ["milk", "cheese", "yogurt"],
+    },
 }
 ```
 
@@ -226,10 +226,10 @@ categories["fruits"] where {
 
 ```melbi
 users["alice"].email where {
-  users = {
-    "alice": { name = "Alice", email = "alice@example.com", age = 30 },
-    "bob": { name = "Bob", email = "bob@example.com", age = 25 }
-  }
+    users = {
+        "alice": { name = "Alice", email = "alice@example.com", age = 30 },
+        "bob": { name = "Bob", email = "bob@example.com", age = 25 },
+    },
 }
 ```
 
@@ -237,16 +237,16 @@ users["alice"].email where {
 
 ```melbi
 config["database"]["host"] where {
-  config = {
-    "database": {
-      "host": "localhost",
-      "port": 5432
+    config = {
+        "database": {
+            "host": "localhost",
+            "port": 5432,
+        },
+        "cache": {
+            "host": "redis",
+            "port": 6379,
+        },
     },
-    "cache": {
-      "host": "redis",
-      "port": 6379
-    }
-  }
 }
 ```
 
@@ -256,15 +256,15 @@ config["database"]["host"] where {
 
 ```melbi
 total where {
-  prices = {
-    "small": 10.00,
-    "medium": 15.00,
-    "large": 20.00,
-    "xlarge": 25.00
-  },
-  selected_size = "medium",
-  quantity = 3,
-  total = prices[selected_size] * quantity
+    prices = {
+        "small": 10.00,
+        "medium": 15.00,
+        "large": 20.00,
+        "xlarge": 25.00,
+    },
+    selected_size = "medium",
+    quantity = 3,
+    total = prices[selected_size] * quantity,
 }
 ```
 
@@ -272,14 +272,14 @@ total where {
 
 ```melbi
 country_name where {
-  countries = {
-    "US": "United States",
-    "CA": "Canada",
-    "MX": "Mexico",
-    "UK": "United Kingdom"
-  },
-  code = "CA",
-  country_name = countries[code]
+    countries = {
+        "US": "United States",
+        "CA": "Canada",
+        "MX": "Mexico",
+        "UK": "United Kingdom",
+    },
+    code = "CA",
+    country_name = countries[code],
 }
 ```
 
@@ -287,17 +287,17 @@ country_name where {
 
 ```melbi
 config[env] where {
-  config = {
-    "development": {
-      debug = true,
-      api_url = "http://localhost:3000"
+    config = {
+        "development": {
+            debug = true,
+            api_url = "http://localhost:3000",
+        },
+        "production": {
+            debug = false,
+            api_url = "https://api.example.com",
+        },
     },
-    "production": {
-      debug = false,
-      api_url = "https://api.example.com"
-    }
-  },
-  env = "production"
+    env = "production",
 }
 ```
 
@@ -305,15 +305,15 @@ config[env] where {
 
 ```melbi
 message where {
-  grade_thresholds = {
-    "A": 90,
-    "B": 80,
-    "C": 70,
-    "D": 60
-  },
-  score = 85,
-  passed_b = score >= grade_thresholds["B"],
-  message = if passed_b then "Good job!" else "Keep trying!"
+    grade_thresholds = {
+        "A": 90,
+        "B": 80,
+        "C": 70,
+        "D": 60,
+    },
+    score = 85,
+    passed_b = score >= grade_thresholds["B"],
+    message = if passed_b then "Good job!" else "Keep trying!",
 }
 ```
 
