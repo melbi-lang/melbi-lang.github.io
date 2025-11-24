@@ -5,7 +5,8 @@ parent: Type Safety
 nav_order: 3
 permalink: /tutorial/type-safety/type-casting/
 code_sample: |
-  result as Float where { result = 42 as Float }
+  number as Float + 1.0
+  where { number = 41 }
 ---
 
 # Type Casting
@@ -70,9 +71,9 @@ Result: `3.333...` (not `3`!)
 
 ```melbi
 total where {
-  int_value = 100,
-  float_value = 3.14,
-  total = (int_value as Float) + float_value
+    int_value = 100,
+    float_value = 3.14,
+    total = (int_value as Float) + float_value,
 }
 ```
 
@@ -134,9 +135,9 @@ You say exactly what you mean!
 
 ```melbi
 average where {
-  total = 287,
-  count = 3,
-  average = (total as Float) / (count as Float)
+    total = 287,
+    count = 3,
+    average = (total as Float) / (count as Float),
 }
 ```
 
@@ -148,9 +149,9 @@ Without casting, you'd get `95` (integer division).
 
 ```melbi
 percentage where {
-  completed = 7,
-  total = 10,
-  percentage = ((completed as Float) / (total as Float)) * 100.0
+    completed = 7,
+    total = 10,
+    percentage = ((completed as Float) / (total as Float)) * 100.0,
 }
 ```
 
@@ -160,9 +161,9 @@ Result: `70.0`
 
 ```melbi
 unit_price where {
-  total_cost = 100,
-  quantity = 3,
-  unit_price = (total_cost as Float) / (quantity as Float)
+    total_cost = 100,
+    quantity = 3,
+    unit_price = (total_cost as Float) / (quantity as Float),
 }
 ```
 
@@ -172,8 +173,8 @@ Result: `33.333...`
 
 ```melbi
 rounded where {
-  value = 3.7,
-  rounded = (value + 0.5) as Int
+    value = 3.7,
+    rounded = (value + 0.5) as Int,
 }
 ```
 
@@ -189,8 +190,8 @@ You can cast any expression:
 
 ```melbi
 ((price * quantity) as Float) / 100.0 where {
-  price = 25,
-  quantity = 4
+    price = 25,
+    quantity = 4,
 }
 ```
 
@@ -200,9 +201,9 @@ Sometimes you need to convert back and forth:
 
 ```melbi
 result where {
-  int_value = 42,
-  float_calc = (int_value as Float) * 1.5,
-  back_to_int = float_calc as Int
+    int_value = 42,
+    float_calc = (int_value as Float) * 1.5,
+    back_to_int = float_calc as Int,
 }
 ```
 
@@ -214,9 +215,9 @@ Result: `63` (42 × 1.5 = 63.0, then truncated to 63)
 
 ```melbi
 tax where {
-  subtotal = 100,
-  tax_rate = 0.08,
-  tax = ((subtotal as Float) * tax_rate) as Int
+    subtotal = 100,
+    tax_rate = 0.08,
+    tax = ((subtotal as Float) * tax_rate) as Int,
 }
 ```
 
@@ -226,9 +227,9 @@ This calculates tax as a float, then converts to cents (integer).
 
 ```melbi
 percentage where {
-  correct = 17,
-  total = 20,
-  percentage = f"{((correct as Float) / (total as Float)) * 100.0}%"
+    correct = 17,
+    total = 20,
+    percentage = f"{ ((correct as Float) / (total as Float)) * 100.0 }%",
 }
 ```
 
@@ -238,9 +239,9 @@ Result: `"85.0%"`
 
 ```melbi
 hours where {
-  total_minutes = 150,
-  hours = total_minutes / 60,
-  remaining_minutes = total_minutes - (hours * 60)
+    total_minutes = 150,
+    hours = total_minutes / 60,
+    remaining_minutes = total_minutes - (hours * 60),
 }
 ```
 
@@ -250,9 +251,9 @@ This uses integer division to get whole hours.
 
 ```melbi
 average_rating where {
-  total_stars = 47,
-  num_ratings = 10,
-  average_rating = (total_stars as Float) / (num_ratings as Float)
+    total_stars = 47,
+    num_ratings = 10,
+    average_rating = (total_stars as Float) / (num_ratings as Float),
 }
 ```
 
@@ -270,8 +271,8 @@ If the cast succeeds, you get the integer. If it fails, you get the fallback.
 
 ```melbi
 safe_int where {
-  maybe_number = "not a number",
-  safe_int = (maybe_number as Int) otherwise -1
+    maybe_number = "not a number",
+    safe_int = (maybe_number as Int) otherwise -1,
 }
 ```
 
@@ -281,11 +282,11 @@ safe_int where {
 
 ```melbi
 safe_divide where {
-  numerator = 10,
-  denominator = 3,
-  safe_divide = if denominator != 0 
-    then (numerator as Float) / (denominator as Float)
-    else 0.0
+    numerator = 10,
+    denominator = 3,
+    safe_divide = if denominator != 0
+        then (numerator as Float) / (denominator as Float)
+        else 0.0,
 }
 ```
 
@@ -293,9 +294,9 @@ safe_divide where {
 
 ```melbi
 percent where {
-  part = 3,
-  whole = 4,
-  percent = (((part as Float) / (whole as Float)) * 100.0) as Int
+    part = 3,
+    whole = 4,
+    percent = (((part as Float) / (whole as Float)) * 100.0) as Int,
 }
 ```
 
@@ -305,9 +306,9 @@ Result: `75` (integer percentage)
 
 ```melbi
 price_display where {
-  cents = 1299,
-  dollars = (cents as Float) / 100.0,
-  price_display = f"${dollars}"
+    cents = 1299,
+    dollars = (cents as Float) / 100.0,
+    price_display = f"${ dollars }",
 }
 ```
 
@@ -341,17 +342,17 @@ Melbi makes you choose explicitly, preventing:
 1. **Be explicit** - Even when it seems obvious, cast for clarity
 
 2. **Cast early** - Convert at the start of calculations:
-   ```melbi
-   total where {
-     a = 10 as Float,
-     b = 20 as Float,
-     total = a + b  // Now both are floats
-   }
-   ```
+    ```melbi
+    total where {
+        a = 10 as Float,
+        b = 20 as Float,
+        total = a + b, // Now both are floats
+    }
+    ```
 
 3. **Remember truncation** - Float to Int doesn't round!
    ```melbi
-   3.9 as Int  // gives 3, not 4!
+   3.9 as Int // gives 3, not 4!
    ```
 
 4. **Use otherwise** - Protect against cast failures:
@@ -362,10 +363,10 @@ Melbi makes you choose explicitly, preventing:
 5. **Document why** - Make it clear why you're casting:
    ```melbi
    average where {
-     sum = 100,
-     count = 3,
-     // Cast to float for decimal precision
-     average = (sum as Float) / (count as Float)
+       sum = 100,
+       count = 3,
+       // Cast to float for decimal precision
+       average = (sum as Float) / (count as Float),
    }
    ```
 

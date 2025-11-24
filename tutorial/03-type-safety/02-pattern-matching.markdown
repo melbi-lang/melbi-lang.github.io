@@ -29,10 +29,10 @@ You've already seen pattern matching with Options. But `match` is much more powe
 
 ```melbi
 day match {
-  1 -> "Monday",
-  2 -> "Tuesday", 
-  3 -> "Wednesday",
-  _ -> "Other day"
+    1 -> "Monday",
+    2 -> "Tuesday",
+    3 -> "Wednesday",
+    _ -> "Other day",
 }
 where { day = 2 }
 ```
@@ -45,9 +45,9 @@ Result: `"Tuesday"`
 
 ```melbi
 VALUE match {
-  PATTERN1 -> RESULT1,
-  PATTERN2 -> RESULT2,
-  PATTERN3 -> RESULT3
+    PATTERN1 -> RESULT1,
+    PATTERN2 -> RESULT2,
+    PATTERN3 -> RESULT3,
 }
 ```
 
@@ -61,10 +61,10 @@ Match exact values:
 
 ```melbi
 score match {
-  100 -> "Perfect!",
-  90 -> "Excellent",
-  80 -> "Good",
-  _ -> "Keep trying"
+    100 -> "Perfect!",
+    90 -> "Excellent",
+    80 -> "Good",
+    _ -> "Keep trying",
 }
 where { score = 90 }
 ```
@@ -73,10 +73,10 @@ where { score = 90 }
 
 ```melbi
 command match {
-  "start" -> "Starting...",
-  "stop" -> "Stopping...",
-  "restart" -> "Restarting...",
-  _ -> "Unknown command"
+    "start" -> "Starting...",
+    "stop" -> "Stopping...",
+    "restart" -> "Restarting...",
+    _ -> "Unknown command",
 }
 where { command = "start" }
 ```
@@ -85,8 +85,8 @@ where { command = "start" }
 
 ```melbi
 flag match {
-  true -> "Enabled",
-  false -> "Disabled"
+    true -> "Enabled",
+    false -> "Disabled",
 }
 where { flag = true }
 ```
@@ -97,10 +97,10 @@ The underscore matches anything and is typically used as the last case:
 
 ```melbi
 status_code match {
-  200 -> "Success",
-  404 -> "Not Found",
-  500 -> "Server Error",
-  _ -> "Other status"
+    200 -> "Success",
+    404 -> "Not Found",
+    500 -> "Server Error",
+    _ -> "Other status",
 }
 where { status_code = 403 }
 ```
@@ -115,7 +115,7 @@ Bind the value to a name:
 
 ```melbi
 result match {
-  value -> value * 2
+    value -> value * 2,
 }
 where { result = 21 }
 ```
@@ -126,7 +126,7 @@ This is most useful when you want to transform the value:
 
 ```melbi
 input match {
-  x -> f"You entered: {x}"
+    x -> f"You entered: { x }",
 }
 where { input = "hello" }
 ```
@@ -137,8 +137,8 @@ We've seen these before:
 
 ```melbi
 maybe_user match {
-  some name -> f"Hello, {name}!",
-  none -> "Hello, guest!"
+    some name -> f"Hello, { name }!",
+    none -> "Hello, guest!",
 }
 where { maybe_user = some "Alice" }
 ```
@@ -147,9 +147,9 @@ You can also nest them:
 
 ```melbi
 outer match {
-  some (some value) -> f"Double some: {value}",
-  some none -> "Some none",
-  none -> "Just none"
+    some (some value) -> f"Double some: { value }",
+    some none -> "Some none",
+    none -> "Just none",
 }
 where { outer = some (some 42) }
 ```
@@ -162,8 +162,8 @@ Melbi is smart about patterns. For certain types, it ensures you handle all case
 
 ```melbi
 flag match {
-  true -> "yes",
-  false -> "no"
+    true -> "yes",
+    false -> "no",
 }
 ```
 
@@ -172,7 +172,7 @@ Both cases covered! ✓
 If you forget one:
 ```melbi
 flag match {
-  true -> "yes"
+    true -> "yes",
 }
 ```
 
@@ -182,8 +182,8 @@ Melbi will complain - you must handle `false` (or use `_` wildcard).
 
 ```melbi
 opt match {
-  some x -> x,
-  none -> 0
+    some x -> x,
+    none -> 0,
 }
 ```
 
@@ -195,9 +195,9 @@ For numbers, strings, etc., you need a catch-all:
 
 ```melbi
 n match {
-  1 -> "one",
-  2 -> "two",
-  _ -> "many"
+    1 -> "one",
+    2 -> "two",
+    _ -> "many",
 }
 ```
 
@@ -209,11 +209,11 @@ The `_` makes it exhaustive.
 
 ```melbi
 response match {
-  200 -> { success = true, message = "OK" },
-  201 -> { success = true, message = "Created" },
-  404 -> { success = false, message = "Not Found" },
-  500 -> { success = false, message = "Server Error" },
-  _ -> { success = false, message = "Unknown Error" }
+    200 -> { success = true, message = "OK" },
+    201 -> { success = true, message = "Created" },
+    404 -> { success = false, message = "Not Found" },
+    500 -> { success = false, message = "Server Error" },
+    _ -> { success = false, message = "Unknown Error" },
 }
 where { response = 404 }
 ```
@@ -222,12 +222,12 @@ where { response = 404 }
 
 ```melbi
 letter match {
-  "A" -> 4.0,
-  "B" -> 3.0,
-  "C" -> 2.0,
-  "D" -> 1.0,
-  "F" -> 0.0,
-  _ -> 0.0
+    "A" -> 4.0,
+    "B" -> 3.0,
+    "C" -> 2.0,
+    "D" -> 1.0,
+    "F" -> 0.0,
+    _ -> 0.0,
 }
 where { letter = "B" }
 ```
@@ -236,11 +236,11 @@ where { letter = "B" }
 
 ```melbi
 state match {
-  "idle" -> "Ready",
-  "loading" -> "Please wait...",
-  "success" -> "Complete!",
-  "error" -> "Something went wrong",
-  _ -> "Unknown state"
+    "idle" -> "Ready",
+    "loading" -> "Please wait...",
+    "success" -> "Complete!",
+    "error" -> "Something went wrong",
+    _ -> "Unknown state",
 }
 where { state = "loading" }
 ```
@@ -249,11 +249,11 @@ where { state = "loading" }
 
 ```melbi
 role match {
-  "admin" -> 100,
-  "moderator" -> 50,
-  "user" -> 10,
-  "guest" -> 1,
-  _ -> 0
+    "admin" -> 100,
+    "moderator" -> 50,
+    "user" -> 10,
+    "guest" -> 1,
+    _ -> 0,
 }
 where { role = "moderator" }
 ```
@@ -264,18 +264,18 @@ You can match on the result of calculations:
 
 ```melbi
 (age / 10) match {
-  0 -> "Child",
-  1 -> "Teenager",
-  2 -> "Young Adult",
-  _ -> "Adult"
+    0 -> "Child",
+    1 -> "Teenager",
+    2 -> "Young Adult",
+    _ -> "Adult",
 }
 where { age = 25 }
 ```
 
 ```melbi
 (score >= 90) match {
-  true -> "A",
-  false -> "Not an A"
+    true -> "A",
+    false -> "Not an A",
 }
 where { score = 95 }
 ```
@@ -284,14 +284,14 @@ where { score = 95 }
 
 ```melbi
 message where {
-  user_type = "premium",
-  discount = user_type match {
-    "premium" -> 0.20,
-    "standard" -> 0.10,
-    "trial" -> 0.05,
-    _ -> 0.0
-  },
-  message = f"Your discount: {discount * 100}%"
+    user_type = "premium",
+    discount = user_type match {
+        "premium" -> 0.20,
+        "standard" -> 0.10,
+        "trial" -> 0.05,
+        _ -> 0.0,
+    },
+    message = f"Your discount: { discount * 100 }%",
 }
 ```
 
@@ -301,15 +301,15 @@ message where {
 
 ```melbi
 result where {
-  payment_status = "completed",
-  amount = 99.99,
-  message = payment_status match {
-    "completed" -> f"Payment of ${amount} successful",
-    "pending" -> "Payment is being processed",
-    "failed" -> "Payment failed, please try again",
-    "refunded" -> f"Refund of ${amount} issued",
-    _ -> "Unknown payment status"
-  }
+    payment_status = "completed",
+    amount = 99.99,
+    message = payment_status match {
+        "completed" -> f"Payment of ${ amount } successful",
+        "pending" -> "Payment is being processed",
+        "failed" -> "Payment failed, please try again",
+        "refunded" -> f"Refund of ${ amount } issued",
+        _ -> "Unknown payment status",
+    },
 }
 ```
 
@@ -317,15 +317,15 @@ result where {
 
 ```melbi
 description where {
-  extension = ".jpg",
-  file_type = extension match {
-    ".jpg" -> "JPEG Image",
-    ".png" -> "PNG Image",
-    ".gif" -> "GIF Image",
-    ".pdf" -> "PDF Document",
-    ".txt" -> "Text File",
-    _ -> "Unknown File Type"
-  }
+    extension = ".jpg",
+    file_type = extension match {
+        ".jpg" -> "JPEG Image",
+        ".png" -> "PNG Image",
+        ".gif" -> "GIF Image",
+        ".pdf" -> "PDF Document",
+        ".txt" -> "Text File",
+        _ -> "Unknown File Type",
+    },
 }
 ```
 
@@ -333,15 +333,15 @@ description where {
 
 ```melbi
 result where {
-  action = "attack",
-  damage = 50,
-  result = action match {
-    "attack" -> f"Dealt {damage} damage",
-    "defend" -> "Raised shield",
-    "heal" -> "Restored health",
-    "flee" -> "Ran away",
-    _ -> "Invalid action"
-  }
+    action = "attack",
+    damage = 50,
+    result = action match {
+        "attack" -> f"Dealt { damage } damage",
+        "defend" -> "Raised shield",
+        "heal" -> "Restored health",
+        "flee" -> "Ran away",
+        _ -> "Invalid action",
+    },
 }
 ```
 
@@ -349,14 +349,14 @@ result where {
 
 ```melbi
 user_message where {
-  error_code = "AUTH_FAILED",
-  user_message = error_code match {
-    "AUTH_FAILED" -> "Invalid username or password",
-    "RATE_LIMITED" -> "Too many requests, please wait",
-    "NOT_FOUND" -> "Resource not found",
-    "NETWORK_ERROR" -> "Connection failed",
-    _ -> "An error occurred"
-  }
+    error_code = "AUTH_FAILED",
+    user_message = error_code match {
+        "AUTH_FAILED" -> "Invalid username or password",
+        "RATE_LIMITED" -> "Too many requests, please wait",
+        "NOT_FOUND" -> "Resource not found",
+        "NETWORK_ERROR" -> "Connection failed",
+        _ -> "An error occurred",
+    },
 }
 ```
 
@@ -376,10 +376,10 @@ where { status = 404 }
 **With pattern matching:**
 ```melbi
 status match {
-  200 -> "OK",
-  404 -> "Not Found",
-  500 -> "Error",
-  _ -> "Unknown"
+    200 -> "OK",
+    404 -> "Not Found",
+    500 -> "Error",
+    _ -> "Unknown",
 }
 where { status = 404 }
 ```
@@ -407,8 +407,8 @@ Often you'll use both in the same expression!
 
 ```melbi
 result match {
-  some value -> if value > 100 then "High" else "Normal",
-  none -> "Unknown"
+    some value -> if value > 100 then "High" else "Normal",
+    none -> "Unknown",
 }
 where { result = some 150 }
 ```

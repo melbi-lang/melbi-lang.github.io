@@ -66,8 +66,8 @@ Remember `otherwise` from the last lesson? Options give you another way to handl
 
 ```melbi
 users[user_id] otherwise none where {
-  users = { "alice": some "Alice", "bob": some "Bob" },
-  user_id = "charlie"
+    users = {"alice": some "Alice", "bob": some "Bob"},
+    user_id = "charlie",
 }
 ```
 
@@ -79,8 +79,8 @@ To use the value inside an Option, you use pattern matching (which you'll learn 
 
 ```melbi
 result match {
-  some value -> value * 2,
-  none -> 0
+    some value -> value * 2,
+    none -> 0,
 }
 where { result = some 21 }
 ```
@@ -95,8 +95,8 @@ If we had `result = none`:
 
 ```melbi
 result match {
-  some value -> value * 2,
-  none -> 0
+    some value -> value * 2,
+    none -> 0,
 }
 where { result = none }
 ```
@@ -109,15 +109,15 @@ The result would be `0`.
 
 ```melbi
 greeting match {
-  some name -> f"Welcome back, {name}!",
-  none -> "Welcome, guest!"
+    some name -> f"Welcome back, { name }!",
+    none -> "Welcome, guest!",
 }
 where {
-  user_id = "charlie",
-  users = { "alice": "Alice", "bob": "Bob" },
-  greeting = if user_id in users 
-    then some users[user_id] 
-    else none
+    user_id = "charlie",
+    users = {"alice": "Alice", "bob": "Bob"},
+    greeting = if user_id in users
+        then some users[user_id]
+        else none,
 }
 ```
 
@@ -125,14 +125,14 @@ where {
 
 ```melbi
 timeout match {
-  some value -> value,
-  none -> 30
+    some value -> value,
+    none -> 30,
 }
 where {
-  config = { "host": "api.example.com" },
-  timeout = if "timeout" in config 
-    then some config["timeout"] 
-    else none
+    config = {"host": "api.example.com"},
+    timeout = if "timeout" in config
+        then some config["timeout"]
+        else none,
 }
 ```
 
@@ -140,15 +140,15 @@ where {
 
 ```melbi
 result match {
-  some quotient -> f"Result: {quotient}",
-  none -> "Cannot divide by zero"
+    some quotient -> f"Result: { quotient }",
+    none -> "Cannot divide by zero",
 }
 where {
-  numerator = 10,
-  denominator = 0,
-  result = if denominator != 0 
-    then some (numerator / denominator) 
-    else none
+    numerator = 10,
+    denominator = 0,
+    result = if denominator != 0
+        then some (numerator / denominator)
+        else none,
 }
 ```
 
@@ -156,14 +156,14 @@ where {
 
 ```melbi
 status match {
-  some email -> f"Email {email} is valid",
-  none -> "Invalid email address"
+    some email -> f"Email { email } is valid",
+    none -> "Invalid email address",
 }
 where {
-  input = "user@example.com",
-  status = if "@" in input and "." in input
-    then some input
-    else none
+    input = "user@example.com",
+    status = if "@" in input and "." in input
+        then some input
+        else none,
 }
 ```
 
@@ -187,9 +187,9 @@ You can handle nested Options with pattern matching:
 
 ```melbi
 outer match {
-  some (some value) -> f"Got value: {value}",
-  some none -> "Got some, but inner was none",
-  none -> "Got none"
+    some (some value) -> f"Got value: { value }",
+    some none -> "Got some, but inner was none",
+    none -> "Got none",
 }
 where { outer = some (some 42) }
 ```
@@ -200,8 +200,8 @@ You can combine Options with `otherwise` for even more flexibility:
 
 ```melbi
 value match {
-  some x -> x,
-  none -> 0
+    some x -> x,
+    none -> 0,
 } otherwise -1
 ```
 
@@ -209,20 +209,22 @@ This unwraps the Option if successful, otherwise returns -1 if there's any error
 
 ## The otherwise operator with Options
 
-Remember how `otherwise` catches errors? It also works great with Options:
+Remember how `otherwise` catches errors? It can also be used to convert an error
+to an optional value:
 
 ```melbi
 (some users[user_id] otherwise none) match {
-  some name -> f"Hello, {name}",
-  none -> "User not found"
+    some name -> f"Hello, { name }",
+    none -> "User not found",
 }
 where {
-  users = { "alice": "Alice" },
-  user_id = "bob"
+    users = {"alice": "Alice"},
+    user_id = "bob",
 }
 ```
 
-If the lookup fails, `otherwise none` catches it and provides a `none` Option.
+If the lookup succeeds then `some value` is returned, if it fails,
+`otherwise none` catches it and provides a `none` Option.
 
 ## Real-world examples
 
@@ -230,15 +232,15 @@ If the lookup fails, `otherwise none` catches it and provides a `none` Option.
 
 ```melbi
 message match {
-  some user -> f"User: {user.name}, Email: {user.email}",
-  none -> "No user data available"
+    some user -> f"User: { user.name }, Email: { user.email }",
+    none -> "No user data available",
 }
 where {
-  response_success = true,
-  user_data = { name = "Alice", email = "alice@example.com" },
-  message = if response_success 
-    then some user_data 
-    else none
+    response_success = true,
+    user_data = { name = "Alice", email = "alice@example.com" },
+    message = if response_success
+        then some user_data
+        else none,
 }
 ```
 
@@ -246,14 +248,14 @@ where {
 
 ```melbi
 age_status match {
-  some age -> if age >= 18 then "Valid" else "Too young",
-  none -> "Age not provided"
+    some age -> if age >= 18 then "Valid" else "Too young",
+    none -> "Age not provided",
 }
 where {
-  form_data = { "name": "John" },
-  age_status = if "age" in form_data 
-    then some form_data["age"] 
-    else none
+    form_data = {"name": "John"},
+    age_status = if "age" in form_data
+        then some form_data["age"]
+        else none,
 }
 ```
 
@@ -261,30 +263,29 @@ where {
 
 ```melbi
 data match {
-  some cached -> f"Using cached value: {cached}",
-  none -> "Cache miss, fetching fresh data"
+    some cached -> f"Using cached value: { cached }",
+    none -> "Cache miss, fetching fresh data",
 }
 where {
-  cache = { "user_123": "Alice" },
-  user_id = "user_456",
-  data = if user_id in cache 
-    then some cache[user_id] 
-    else none
+    cache = {"user_123": "Alice"},
+    user_id = "user_456",
+    data = if user_id in cache
+        then some cache[user_id]
+        else none,
 }
 ```
 
 ### Search results
 
 ```melbi
-result match {
-  some index -> f"Found at position {index}",
-  none -> "Not found in list"
+if found then some 1 else none match {
+    some index -> f"Found at position { index }",
+    none -> "Not found in list",
 }
 where {
-  items = ["apple", "banana", "cherry"],
-  search = "banana",
-  found = items[1] == search,
-  result = if found then some 1 else none
+    items = ["apple", "banana", "cherry"],
+    search = "banana",
+    found = items[1] == search,
 }
 ```
 
@@ -305,8 +306,8 @@ where {
 **Use both:**
 ```melbi
 (some lookup_value otherwise none) match {
-  some x -> x * 2,
-  none -> 0
+    some x -> x * 2,
+    none -> 0,
 }
 ```
 
@@ -318,6 +319,7 @@ Here's why Options are safe:
 
 Without Options (in many languages):
 ```
+// In other languages:
 user = users[id]  // might be null!
 name = user.name  // CRASH if user was null!
 ```
@@ -325,8 +327,8 @@ name = user.name  // CRASH if user was null!
 With Options in Melbi:
 ```melbi
 user match {
-  some u -> u.name,
-  none -> "Unknown"
+    some u -> u.name,
+    none -> "Unknown",
 }
 ```
 
@@ -347,8 +349,8 @@ In Melbi, you **must** use pattern matching or `otherwise`. This forces you to t
 
 ```melbi
 option match {
-  some value -> value,
-  none -> default_value
+    some value -> value,
+    none -> default_value,
 }
 ```
 
