@@ -228,7 +228,7 @@ status where {
 ```melbi
 city where {
     users = {
-        "alice": { name = "Alice", address = { city = "NYC" } }
+        "alice": { name = "Alice", address = { city = "NYC" } },
     },
     user_id = "bob",
     user = users[user_id] otherwise { name = "Guest", address = { city = "Unknown" } },
