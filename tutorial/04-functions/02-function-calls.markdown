@@ -5,7 +5,10 @@ parent: Functions
 nav_order: 2
 permalink: /tutorial/functions/function-calls/
 code_sample: |
-  Math.Sqrt(16) + Math.Abs(-5)
+  absolute + square_root where {
+    absolute = Math.Abs(-42.0),
+    square_root = Math.Sqrt(16.0),
+  }
 ---
 
 # Function Calls
@@ -20,275 +23,225 @@ code_sample: |
 {:toc}
 </details>
 
-You've learned how to create lambdas—functions you define yourself. But Melbi also provides **built-in functions** from the standard library, and the host application can provide **custom functions** specific to your use case. Let's learn how to work with functions that come from outside your expression.
+You've learned how to create your own lambdas. But Melbi also provides **built-in functions** through packages, and the application embedding Melbi can provide **custom functions** for your specific use case. Let's learn how to call these functions and understand their types!
 
-## Built-in vs Your Functions
+## Functions from Packages
 
-There's an important naming convention in Melbi:
-
-- **Capitalized names** (like `Math.Sqrt`) are functions from **packages**—either standard library or provided by the host application
-- **Lowercase names** (like `double` or `add`) are typically **your lambdas** defined with `where`
+While you define your own lambdas with lowercase names, functions from packages use capitalized names:
 
 ```melbi
-result where {
-  double = (x) => x * 2,        // Your lambda (lowercase)
-  value = Math.Sqrt(16),         // Built-in function (capitalized)
-  result = double(value)         // Calling your lambda
+my_double(stdlib_abs) where {
+  my_double = (x) => x * 2.,     // Your lambda (lowercase)
+  stdlib_abs = Math.Abs(-5.0),   // Package function (capitalized)
 }
 ```
+
+Result: `10.0`
+
+The naming convention helps you see at a glance what's from a package versus what you defined.
+
+## Function Types
+
+Every function has a **type** that describes what it accepts and what it returns. The syntax looks like this:
+
+```
+(ParameterType) => ReturnType
+```
+
+This reads as: "takes ParameterType, returns ReturnType"
+
+For example, `Math.Abs` has type:
+```
+(Float) => Float
+```
+
+This means: "takes a Float, returns a Float"
+
+### Multiple Parameters
+
+Functions can take multiple parameters:
+
+```
+(Float, Float) => Float
+```
+
+This means: "takes two Floats, returns a Float"
+
+For example, `Math.Pow` (power/exponentiation) has this type—it takes a base and an exponent, both Floats, and returns a Float.
+
+### Why Function Types Matter
+
+Understanding function types helps you:
+- Know what arguments to provide
+- Understand what you'll get back
+- See which functions can work together
+- Prepare for **generic functions** (coming next!)
 
 ## Calling Package Functions
 
 To call a function from a package, use the package name, a dot, and the function name:
 
 ```melbi
-Math.Sqrt(16)
+Math.Abs(-42.0)
 ```
 
-This calls the `Sqrt` function from the `Math` package with the argument `16`, returning `4.0`.
+Type: `(Float) => Float`
+Result: `42.0`
 
-Functions can take multiple arguments:
+With multiple arguments:
 
 ```melbi
-Math.Pow(2, 8)
+Math.Pow(2.0, 8.0)
 ```
 
-This raises 2 to the power of 8, returning `256.0`.
+Type: `(Float, Float) => Float`  
+Result: `256.0` (2 to the power of 8)
 
-## The Math Package
+## Return Values
 
-Melbi provides mathematical functions and constants:
+Every function returns a value. You can use that value in larger expressions:
 
-**Constants:**
 ```melbi
-constants where {
-  pi = Math.PI,           // 3.14159...
-  e = Math.E,             // 2.71828...
-  tau = Math.TAU,         // 6.28318... (2π)
-  constants = [pi, e, tau]
+squared where {
+  base = Math.Abs(-10.0),
+  squared = Math.Pow(base, 2.0),
 }
 ```
 
-**Basic operations:**
-```melbi
-Math.Abs(-42)           // Absolute value → 42.0
-Math.Min(5, 3)          // Minimum → 3.0
-Math.Max(5, 3)          // Maximum → 5.0
-Math.Clamp(10, 0, 5)    // Clamp to range → 5.0
-```
-
-**Rounding:**
-```melbi
-Math.Floor(3.7)         // Round down → 3
-Math.Ceil(3.2)          // Round up → 4
-Math.Round(3.5)         // Round to nearest → 4
-```
-
-**Power and roots:**
-```melbi
-Math.Sqrt(25)           // Square root → 5.0
-Math.Pow(2, 10)         // Power → 1024.0
-```
-
-**Trigonometry:**
-```melbi
-Math.Sin(Math.PI / 2)   // Sine → 1.0
-Math.Cos(0)             // Cosine → 1.0
-Math.Tan(Math.PI / 4)   // Tangent → 1.0
-```
-
-**Logarithms:**
-```melbi
-Math.Log(Math.E)        // Natural log → 1.0
-Math.Log10(100)         // Base-10 log → 2.0
-Math.Exp(1)             // e^x → 2.71828...
-```
-
-## The String Package
-
-String manipulation functions:
-
-**Inspection:**
-```melbi
-String.Len("Melbi")                        // Length → 5
-String.IsEmpty("")                          // Check if empty → true
-String.Contains("hello world", "world")     // Contains substring → true
-String.StartsWith("hello", "hel")           // Starts with → true
-String.EndsWith("hello", "lo")              // Ends with → true
-```
-
-**Transformation (ASCII only):**
-```melbi
-String.Upper("hello")                       // Uppercase → "HELLO"
-String.Lower("HELLO")                       // Lowercase → "hello"
-String.Trim("  hello  ")                    // Remove whitespace → "hello"
-String.TrimStart("  hello")                 // Trim start → "hello"
-String.TrimEnd("hello  ")                   // Trim end → "hello"
-```
-
-Note: `String.Upper` and `String.Lower` only work with ASCII characters (a-z, A-Z). For full Unicode support, the host can provide a `Unicode` package.
-
-**Replacing:**
-```melbi
-String.Replace("hello world", "world", "Melbi")  // → "hello Melbi"
-```
-
-**Splitting and joining:**
-```melbi
-String.Split("a,b,c", ",")                  // → ["a", "b", "c"]
-String.Join(["a", "b", "c"], "-")           // → "a-b-c"
-```
-
-**Parsing:**
-```melbi
-String.ToInt("42")                          // → some 42
-String.ToInt("abc")                         // → none
-String.ToFloat("3.14")                      // → some 3.14
-```
-
-These return Options because parsing can fail!
-
-## The Array Package
-
-Array operations (we'll see more in the next lessons):
-
-**Inspection:**
-```melbi
-Array.Len([1, 2, 3])                        // Length → 3
-Array.IsEmpty([])                           // Check if empty → true
-```
-
-**Note:** To get the first or last element, just use indexing: `arr[0]` or `arr[Array.Len(arr) - 1]`. You can use `otherwise` to handle empty arrays: `arr[0] otherwise "default"`.
+Result: `100.0`
 
 ## Chaining Function Calls
 
-You can use the result of one function as input to another:
+Since functions return values, you can use one function's output as another's input:
 
 ```melbi
-Math.Sqrt(Math.Abs(-16))
+Math.Sqrt(Math.Abs(-16.0))
 ```
 
-This first calculates `Math.Abs(-16)` (which is `16.0`), then passes it to `Math.Sqrt` (which returns `4.0`).
+This works because:
+1. `Math.Abs(-16.0)` has type `(Float) => Float`, returns `16.0`
+2. `Math.Sqrt(16.0)` has type `(Float) => Float`, returns `4.0`
 
-With `where` bindings, you can make complex chains more readable:
+The output type of `Abs` matches the input type of `Sqrt`, so they fit together!
 
-```melbi
-rounded where {
-  raw_input = "  42.7  ",
-  trimmed = String.Trim(raw_input),
-  parsed = String.ToFloat(trimmed),
-  rounded = parsed match {
-    some value -> Math.Round(value),
-    none -> 0
-  }
-}
-```
-
-## Mixing Functions and Operators
-
-Functions work seamlessly with operators:
+For readability, you can use `where` bindings:
 
 ```melbi
 result where {
-  base = 10,
-  exponent = 2,
-  offset = 5,
-  result = Math.Pow(base as Float, exponent as Float) + offset
+  negative = -16.0,
+  positive = Math.Abs(negative),
+  root = Math.Sqrt(positive),
+  result = root
 }
 ```
 
-Result: `105.0`
+Result: `4.0`
 
-## Real-World Examples
+## A Few Examples
 
-### Temperature Converter
+Let's look at a few package functions to understand the concepts. These aren't exhaustive lists—they're examples to teach you how functions work!
+
+### Math Functions
+
+**Absolute value:**
+```melbi
+Math.Abs(-42.0)
+```
+Type: `(Float) => Float`  
+Takes a number, returns its absolute value
+
+**Square root:**
+```melbi
+Math.Sqrt(25.0)
+```
+Type: `(Float) => Float`  
+Takes a number, returns its square root
+
+**Power:**
+```melbi
+Math.Pow(3.0, 4.0)
+```
+Type: `(Float, Float) => Float`  
+Takes base and exponent, returns base^exponent (81.0)
+
+**Rounding:**
+```melbi
+Math.Round(3.7)
+```
+Type: `(Float) => Int`  
+Notice: takes Float, **returns Int**! (Result: `4`)
+
+### String Functions
+
+**Remove whitespace:**
+```melbi
+String.Trim("  hello  ")
+```
+Type: `(String) => String`  
+Returns: `"hello"`
+
+**Change case (ASCII only):**
+```melbi
+String.Upper("hello")
+```
+Type: `(String) => String`  
+Returns: `"HELLO"`
+
+Note: `Upper` and `Lower` only work with ASCII characters (a-z, A-Z). For full Unicode support, the host can provide a `Unicode` package.
+
+**Get length:**
+```melbi
+String.Len("Melbi")
+```
+Type: `(String) => Int`  
+Notice: takes String, **returns Int**! (Result: `5`)
+
+## Different Return Types
+
+Pay attention to return types! Some functions return a different type than they accept:
 
 ```melbi
-fahrenheit where {
-  celsius = 25,
-  fahrenheit = celsius * 9 / 5 + 32,
-  rounded = Math.Round(fahrenheit as Float)
+doubled where {
+  text = "Hello, world!",
+  length = String.Len(text),     // String => Int
+  doubled = length * 2,          // Can do math with Int
 }
 ```
 
-### Distance Between Points
-
-```melbi
-distance where {
-  x1 = 0, y1 = 0,
-  x2 = 3, y2 = 4,
-  dx = x2 - x1,
-  dy = y2 - y1,
-  distance = Math.Sqrt((dx * dx + dy * dy) as Float)
-}
-```
-
-Result: `5.0` (the 3-4-5 triangle!)
-
-### Email Validator
-
-```melbi
-is_valid where {
-  email = "  USER@EXAMPLE.COM  ",
-  trimmed = String.Trim(email),
-  normalized = String.Lower(trimmed),
-  has_at = String.Contains(normalized, "@"),
-  has_dot = String.Contains(normalized, "."),
-  is_valid = has_at and has_dot
-}
-```
-
-### Price Calculator
-
-```melbi
-display_price where {
-  price = 29.99,
-  quantity = 3,
-  tax_rate = 0.08,
-  subtotal = price * quantity,
-  tax = subtotal * tax_rate,
-  total = subtotal + tax,
-  rounded = Math.Round(total * 100.0) / 100.0,
-  display_price = f"${rounded}"
-}
-```
-
-### Parsing User Input
-
-```melbi
-parsed where {
-  input = "  123  ",
-  trimmed = String.Trim(input),
-  parsed = String.ToInt(trimmed),
-  result = parsed match {
-    some n -> n * 2,
-    none -> 0
-  }
-}
-```
+Result: `26`
 
 ## Combining Your Lambdas with Package Functions
 
 You can build your own functions that use package functions:
 
 ```melbi
-result where {
-  hypotenuse = (a, b) => Math.Sqrt((a * a + b * b) as Float),
-  normalize = (s) => String.Lower(String.Trim(s)),
-  
-  distance = hypotenuse(3, 4),
-  clean_email = normalize("  HELLO@EXAMPLE.COM  "),
-  
-  result = { distance, clean_email }
+distance where {
+  hypotenuse = (a, b) => Math.Sqrt(a * a + b * b),
+  distance = hypotenuse(3.0, 4.0),
 }
 ```
 
-## Host-Provided Functions
+Result: `5.0`
 
-Beyond the standard library, the application embedding Melbi can provide custom functions for your specific use case:
+Your lambda `hypotenuse` uses `Math.Sqrt` internally. You've composed your own logic with the standard library!
+
+Another example:
 
 ```melbi
-// Example: A network filtering application might provide:
+clean where {
+  normalize = (text) => String.Lower(String.Trim(text)),
+  clean = normalize("  HELLO@EXAMPLE.COM  "),
+}
+```
+
+Result: `"hello@example.com"`
+
+## Host-Provided Functions
+
+Beyond the standard library, the application embedding Melbi can provide custom functions specific to your domain:
+
+```melbi
+// Example: A network filtering tool might provide:
 Packet.GetSourceIP()
 Packet.GetDestPort()
 Packet.GetProtocol()
@@ -296,19 +249,85 @@ Packet.GetProtocol()
 // Example: A spreadsheet might provide:
 Cell.Value("A1")
 Cell.Formula("B2")
+
+// Example: An email system might provide:
+Email.GetSender()
+Email.GetSubject()
 ```
 
-These work exactly like standard library functions—they're capitalized and called the same way.
+These work exactly like standard library functions—capitalized names, same calling syntax, type-safe.
+
+## Type Safety
+
+Melbi checks that your function arguments match the parameter types:
+
+This works:
+```melbi
+Math.Sqrt(16.0)  // Float argument for Float parameter ✓
+```
+
+This doesn't:
+```melbi
+Math.Sqrt("hello")  // String argument for Float parameter ✗
+```
+
+The type checker catches this before your code runs, preventing errors!
+
+## Real-World Examples
+
+### Temperature Converter
+
+```melbi
+rounded where {
+  celsius = 25.0,
+  fahrenheit = (celsius * 9.0 / 5.0) + 32.0,
+  rounded = Math.Round(fahrenheit),
+}
+```
+
+Result: `77` (note: Int because Round returns Int)
+
+### Distance Between Points
+
+```melbi
+distance where {
+  x1 = 0.0, y1 = 0.0,
+  x2 = 3.0, y2 = 4.0,
+  dx = x2 - x1,
+  dy = y2 - y1,
+  distance_squared = (dx * dx + dy * dy),
+  distance = Math.Sqrt(distance_squared)
+}
+```
+
+Result: `5.0` (the classic 3-4-5 triangle!)
+
+### Email Validation
+
+```melbi
+is_valid where {
+  email = "  USER@EXAMPLE.COM  ",
+  trimmed = String.Trim(email),
+  normalized = String.Lower(trimmed),
+  has_at = "@" in normalized,
+  has_dot = "." in normalized,
+  is_valid = has_at and has_dot
+}
+```
+
+Result: `true`
 
 ## Try It Yourself
 
-Try these challenges in the playground:
+Try these challenges:
 
-1. Calculate the fourth root of 256 using `Math.Pow` and a fractional exponent
-2. Parse a string to a number, then round it using `Math.Round`
-3. Build a name formatter that trims whitespace, converts to lowercase, and checks if it contains a space
-4. Calculate the hypotenuse of a 5-12 right triangle using `Math.Sqrt`
+1. Calculate the hypotenuse of a right triangle with sides 5 and 12 using `Math.Sqrt`
+2. Clean up user input: trim whitespace and convert to lowercase
+3. Calculate the fourth root of 256 using `Math.Sqrt` twice (hint: square root of square root)
+4. Check if an email contains both "@" and "." after trimming and lowercasing
 
 ## What's Next?
 
-You've learned how to call functions from packages and combine them with your own lambdas. Next, we'll explore **higher-order functions**—functions that take other functions as arguments. This opens up powerful patterns like `Array.Map` and `Array.Filter` for transforming data!
+You've learned how to call functions and understand their types. But you might have noticed something interesting: `Math.Sqrt` works with any Float, `String.Trim` works with any String.
+
+What about functions that work with **any type at all**? That's where **generic functions** come in—and they're more powerful than you might think!
