@@ -52,3 +52,6 @@ plugins:
   - jekyll-feed
   - jekyll-sitemap
   - jekyll-toc
+
+exclude:
+  - scripts/
