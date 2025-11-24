@@ -63,10 +63,10 @@ Here's where it gets powerful - you can use earlier bindings to calculate later 
 
 ```melbi
 total where {
-  price = 100,
-  tax_rate = 0.08,
-  tax = price * tax_rate,
-  total = price + tax
+    price = 100,
+    tax_rate = 0.08,
+    tax = price * tax_rate,
+    total = price + tax,
 }
 ```
 
@@ -78,12 +78,12 @@ For longer expressions, you can write them across multiple lines for readability
 
 ```melbi
 final_price where {
-  base_price = 299.99,
-  discount = 0.15,
-  discounted = base_price * (1 - discount),
-  tax_rate = 0.0725,
-  tax = discounted * tax_rate,
-  final_price = discounted + tax
+    base_price = 299.99,
+    discount = 0.15,
+    discounted = base_price * (1 - discount),
+    tax_rate = 0.0725,
+    tax = discounted * tax_rate,
+    final_price = discounted + tax,
 }
 ```
 
@@ -95,11 +95,13 @@ Try clicking the ▶️ button and see how each step builds on the previous one!
 
 ```melbi
 distance where {
-  x1 = 0, y1 = 0,
-  x2 = 3, y2 = 4,
-  dx = x2 - x1,
-  dy = y2 - y1,
-  distance = (dx ^ 2 + dy ^ 2) ^ 0.5
+    x1 = 0,
+    y1 = 0,
+    x2 = 3,
+    y2 = 4,
+    dx = x2 - x1,
+    dy = y2 - y1,
+    distance = (dx ^ 2 + dy ^ 2) ^ 0.5,
 }
 ```
 
@@ -109,10 +111,10 @@ This calculates the distance between two points: `(0,0)` and `(3,4)`.
 
 ```melbi
 amount where {
-  principal = 1000,
-  rate = 0.05,
-  years = 10,
-  amount = principal * ((1 + rate) ^ years)
+    principal = 1000,
+    rate = 0.05,
+    years = 10,
+    amount = principal * ((1 + rate) ^ years),
 }
 ```
 
@@ -122,8 +124,8 @@ Calculate how much $1000 grows at 5% interest over 10 years.
 
 ```melbi
 fahrenheit where {
-  celsius = 25,
-  fahrenheit = (celsius * 9.0 / 5.0) + 32.0
+    celsius = 25,
+    fahrenheit = (celsius * 9.0 / 5.0) + 32.0,
 }
 ```
 

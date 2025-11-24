@@ -61,8 +61,8 @@ Arrays are a common source of errors when indexes are out of bounds:
 
 ```melbi
 scores[student_id] otherwise 0 where {
-  scores = [95, 87, 92],
-  student_id = 10
+    scores = [95, 87, 92],
+    student_id = 10,
 }
 ```
 
@@ -70,8 +70,8 @@ Instead of crashing, this gives you `0` - a sensible default for a missing score
 
 ```melbi
 user_list[index] otherwise "Unknown" where {
-  user_list = ["Alice", "Bob", "Charlie"],
-  index = 5
+    user_list = ["Alice", "Bob", "Charlie"],
+    index = 5,
 }
 ```
 
@@ -83,8 +83,8 @@ Maps also benefit from `otherwise` when keys don't exist:
 
 ```melbi
 prices[product] otherwise 0.0 where {
-  prices = { "apple": 1.50, "banana": 0.75 },
-  product = "grape"
+    prices = {"apple": 1.50, "banana": 0.75},
+    product = "grape",
 }
 ```
 
@@ -92,11 +92,11 @@ Since "grape" isn't in the prices map, you get `0.0` instead of an error.
 
 ```melbi
 translations[lang] otherwise "Hello" where {
-  translations = {
-    "es": "Hola",
-    "fr": "Bonjour"
-  },
-  lang = "de"
+    translations = {
+        "es": "Hola",
+        "fr": "Bonjour",
+    },
+    lang = "de",
 }
 ```
 
@@ -114,8 +114,8 @@ Instead of crashing, this gives you `-1` to indicate an error occurred.
 
 ```melbi
 total / count otherwise 0 where {
-  total = 100,
-  count = 0
+    total = 100,
+    count = 0,
 }
 ```
 
@@ -127,11 +127,11 @@ You can use `otherwise` as part of larger expressions:
 
 ```melbi
 total where {
-  prices = { "laptop": 999.99, "mouse": 25.99 },
-  item = "keyboard",
-  price = prices[item] otherwise 0.0,
-  quantity = 2,
-  total = price * quantity
+    prices = {"laptop": 999.99, "mouse": 25.99},
+    item = "keyboard",
+    price = prices[item] otherwise 0.0,
+    quantity = 2,
+    total = price * quantity,
 }
 ```
 
@@ -143,8 +143,8 @@ If the item isn't in the prices map, the price is `0.0` and total becomes `0.0`.
 
 ```melbi
 theme where {
-  preferences = { "language": "en", "notifications": true },
-  theme = preferences["theme"] otherwise "light"
+    preferences = {"language": "en", "notifications": true},
+    theme = preferences["theme"] otherwise "light",
 }
 ```
 
@@ -153,10 +153,9 @@ If the user hasn't set a theme preference, default to "light".
 ### Safe pagination
 
 ```melbi
-current_page where {
-  pages = ["Welcome", "About", "Contact", "Help"],
-  page_num = 10,
-  current_page = pages[page_num] otherwise pages[0]
+pages[page_num] otherwise pages[0] where {
+    pages = ["Welcome", "About", "Contact", "Help"],
+    page_num = 10,
 }
 ```
 
@@ -165,9 +164,8 @@ If the page number is invalid, show the first page.
 ### Configuration with fallbacks
 
 ```melbi
-timeout where {
-  config = { "host": "api.example.com", "port": 443 },
-  timeout = config["timeout"] otherwise 30
+config["timeout"] otherwise 30 where {
+    config = {"host": "api.example.com", "port": 443},
 }
 ```
 
@@ -176,10 +174,9 @@ If timeout isn't configured, use 30 seconds as default.
 ### Graceful calculation errors
 
 ```melbi
-result where {
-  numerator = 100,
-  denominator = 0,
-  result = (numerator / denominator) otherwise -1
+(numerator / denominator) otherwise -1 where {
+    numerator = 100,
+    denominator = 0,
 }
 ```
 
@@ -191,8 +188,8 @@ You can even chain `otherwise` operators:
 
 ```melbi
 value where {
-  options = {},
-  value = options["primary"] otherwise options["secondary"] otherwise "default"
+    options = {},
+    value = options["primary"] otherwise options["secondary"] otherwise "default",
 }
 ```
 
@@ -219,10 +216,10 @@ The `otherwise` operator catches **runtime errors** like:
 
 ```melbi
 status where {
-  email = "user@example",
-  has_at = ("@" in email),
-  parts = email otherwise "",
-  status = if has_at then "Valid" else "Invalid"
+    email = "user@example",
+    has_at = ("@" in email),
+    parts = email otherwise "",
+    status = if has_at then "Valid" else "Invalid",
 }
 ```
 
@@ -230,12 +227,12 @@ status where {
 
 ```melbi
 city where {
-  users = {
-    "alice": { name = "Alice", address = { city = "NYC" } }
-  },
-  user_id = "bob",
-  user = users[user_id] otherwise { name = "Guest", address = { city = "Unknown" } },
-  city = user.address.city
+    users = {
+        "alice": { name = "Alice", address = { city = "NYC" } }
+    },
+    user_id = "bob",
+    user = users[user_id] otherwise { name = "Guest", address = { city = "Unknown" } },
+    city = user.address.city,
 }
 ```
 
@@ -243,9 +240,9 @@ city where {
 
 ```melbi
 unit_price where {
-  total = 100,
-  quantity = 0,
-  unit_price = (total / quantity) otherwise 0.0
+    total = 100,
+    quantity = 0,
+    unit_price = (total / quantity) otherwise 0,
 }
 ```
 
@@ -253,9 +250,9 @@ unit_price where {
 
 ```melbi
 high_score where {
-  scores = { "alice": 1000, "bob": 1500 },
-  player = "charlie",
-  high_score = scores[player] otherwise 0
+    scores = {"alice": 1000, "bob": 1500},
+    player = "charlie",
+    high_score = scores[player] otherwise 0,
 }
 ```
 
@@ -266,9 +263,9 @@ high_score where {
 2. **Don't hide real bugs** - Use `otherwise` for expected errors (like missing optional data), not to paper over bugs
 
 3. **Consider checking first** - Sometimes it's better to use `in` to check before accessing:
-   ```melbi
-   if "key" in map then map["key"] else default_value
-   ```
+```melbi
+if "key" in map then map["key"] else default_value
+```
 
 4. **Document your fallbacks** - Make it clear why you chose that fallback value
 

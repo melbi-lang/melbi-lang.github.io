@@ -96,9 +96,9 @@ In the future, you'll be able to combine strings with an operator (likely `++`):
 
 For now, use format strings to combine text:
 ```melbi
-f"{greeting}{name}" where {
-  greeting = "Hello, ",
-  name = "Bob"
+f"{ greeting }{ name }" where {
+    greeting = "Hello, ",
+    name = "Bob",
 }
 ```
 
@@ -123,7 +123,7 @@ The `in` operator is perfect for checking if an email contains certain words, if
 Instead of manually concatenating strings, use **format strings**. They start with `f` and let you embed expressions directly:
 
 ```melbi
-f"Hello {name}!" where { name = "Alice" }
+f"Hello { name }!" where { name = "Alice" }
 ```
 
 This evaluates to: `"Hello Alice!"`
@@ -135,15 +135,15 @@ The part in curly braces `{name}` is replaced with the value of `name`.
 You can put any expression inside the braces:
 
 ```melbi
-f"2 + 2 = {2 + 2}"
+f"2 + 2 = { 2 + 2 }"
 ```
 
 Result: `"2 + 2 = 4"`
 
 ```melbi
-f"The total is ${price * quantity}" where {
-  price = 29.99,
-  quantity = 3
+f"The total is ${ price * quantity }" where {
+    price = 29.99,
+    quantity = 3,
 }
 ```
 
@@ -152,10 +152,10 @@ Result: `"The total is $89.97"`
 ### Multiple values
 
 ```melbi
-f"{greeting}, {name}! You have {count} new messages." where {
-  greeting = "Hello",
-  name = "Alice",
-  count = 5
+f"{ greeting }, { name }! You have { count } new messages." where {
+    greeting = "Hello",
+    name = "Alice",
+    count = 5,
 }
 ```
 
@@ -164,13 +164,13 @@ Result: `"Hello, Alice! You have 5 new messages."`
 ### Complex expressions
 
 ```melbi
-f"Your score is {score * 100}%" where { score = 0.95 }
+f"Your score is { score * 100 }%" where { score = 0.95 }
 ```
 
 ```melbi
-f"Tax: ${price * tax_rate}" where {
-  price = 100,
-  tax_rate = 0.08
+f"Tax: ${ price * tax_rate }" where {
+    price = 100,
+    tax_rate = 0.08,
 }
 ```
 
@@ -189,40 +189,40 @@ Result: `"Use {curly braces} like this"`
 ### User notifications
 
 ```melbi
-f"Hi {user}! Your order #{order_id} will arrive on {delivery_date}." where {
-  user = "John",
-  order_id = 12345,
-  delivery_date = "Monday"
+f"Hi { user }! Your order #{ order_id } will arrive on { delivery_date }." where {
+    user = "John",
+    order_id = 12345,
+    delivery_date = "Monday",
 }
 ```
 
 ### Email subject lines
 
 ```melbi
-f"[{status}] Ticket #{ticket}: {title}" where {
-  status = "RESOLVED",
-  ticket = 4567,
-  title = "Login issue"
+f"[{ status }] Ticket #{ ticket }: { title }" where {
+    status = "RESOLVED",
+    ticket = 4567,
+    title = "Login issue",
 }
 ```
 
 ### Status messages
 
 ```melbi
-f"Processing {current} of {total} items ({percentage}% complete)" where {
-  current = 7,
-  total = 10,
-  percentage = (current * 100) / total
+f"Processing { current } of { total } items ({ percentage }% complete)" where {
+    current = 7,
+    total = 10,
+    percentage = (current * 100) / total,
 }
 ```
 
 ### Log messages
 
 ```melbi
-f"{timestamp} - {level}: {message}" where {
-  timestamp = "2024-11-23 10:30:00",
-  level = "ERROR",
-  message = "Connection timeout"
+f"{ timestamp } - { level }: { message }" where {
+    timestamp = "2024-11-23 10:30:00",
+    level = "ERROR",
+    message = "Connection timeout",
 }
 ```
 
@@ -239,7 +239,7 @@ Melbi strings fully support Unicode, so you can use emoji, accented characters, 
 ```
 
 ```melbi
-f"Math: π ≈ {pi}" where { pi = 3.14159 }
+f"Math: π ≈ { pi }" where { pi = 3.14159 }
 ```
 
 ## Try it yourself!

@@ -93,7 +93,7 @@ if 10 <= 8 then "yes" else "no"
 ### Temperature warning
 
 ```melbi
-if temperature > 30 then "It's hot!" else "Nice weather" 
+if temperature > 30 then "It's hot!" else "Nice weather"
 where { temperature = 35 }
 ```
 
@@ -117,9 +117,9 @@ You can use where bindings to organize your conditional logic:
 
 ```melbi
 message where {
-  age = 16,
-  can_drive = age >= 16,
-  message = if can_drive then "You can drive!" else "Too young to drive"
+    age = 16,
+    can_drive = age >= 16,
+    message = if can_drive then "You can drive!" else "Too young to drive",
 }
 ```
 
@@ -209,12 +209,12 @@ where { subject = "Important meeting" }
 ### Email filtering
 
 ```melbi
-if "urgent" in subject or sender == "boss@company.com" 
-then "Priority inbox" 
+if "urgent" in subject or sender == "boss@company.com"
+then "Priority inbox"
 else "Regular inbox"
 where {
-  subject = "Urgent: Project deadline",
-  sender = "colleague@company.com"
+    subject = "Urgent: Project deadline",
+    sender = "colleague@company.com",
 }
 ```
 
@@ -222,11 +222,11 @@ where {
 
 ```melbi
 final_price where {
-  base_price = 50,
-  is_member = true,
-  quantity = 10,
-  discount = if is_member and quantity >= 10 then 0.15 else 0.05,
-  final_price = base_price * quantity * (1 - discount)
+    base_price = 50,
+    is_member = true,
+    quantity = 10,
+    discount = if is_member and quantity >= 10 then 0.15 else 0.05,
+    final_price = base_price * quantity * (1 - discount),
 }
 ```
 
@@ -237,8 +237,8 @@ if role == "admin" or (role == "moderator" and is_owner)
 then "Full access"
 else "Read only"
 where {
-  role = "moderator",
-  is_owner = true
+    role = "moderator",
+    is_owner = true,
 }
 ```
 
@@ -249,9 +249,9 @@ if age >= 18 and email_valid and agreed_to_terms
 then "Registration successful"
 else "Please complete all requirements"
 where {
-  age = 25,
-  email_valid = true,
-  agreed_to_terms = true
+    age = 25,
+    email_valid = true,
+    agreed_to_terms = true,
 }
 ```
 
