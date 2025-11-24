@@ -5,7 +5,7 @@ parent: Functions
 nav_order: 3
 permalink: /tutorial/functions/generic-functions/
 code_sample: |
-  id(42) where { id = (x) => x }
+  { int = id(42), str = id("hello"), bool = id(true) } where { id = (x) => x }
 ---
 
 # Generic Functions
@@ -196,7 +196,7 @@ Same function, different types!
 Some operations only work with certain types. For example, you can't add booleans:
 
 ```melbi
-add = (a, b) => a + b
+(a, b) => a + b
 ```
 
 This lambda uses the `+` operator, which only works with numbers (Int or Float). Melbi automatically restricts this function to **numeric types**.
@@ -217,14 +217,16 @@ Result: `6.0`
 
 But not with strings (yet - string concatenation with `++` is planned):
 ```melbi
-add = (a, b) => a + b,
-result = add("hello", "world")  // Error! Strings don't support +
+add("hello", "world") where {
+    add = (a, b) => a + b,
+} // Error! Strings don't support +
 ```
 
 Or booleans:
 ```melbi
-add = (a, b) => a + b,
-result = add(true, false)  // Error! Booleans don't support +
+add(true, false) where {
+    add = (a, b) => a + b,
+} // Error! Booleans don't support +
 ```
 
 We say this function has a **constraint**: it's generic over types that support the `+` operator.
@@ -234,7 +236,7 @@ We say this function has a **constraint**: it's generic over types that support 
 The comparison operators `<`, `>`, `<=`, `>=` also create constraints:
 
 ```melbi
-max = (a, b) => if a > b then a else b
+(a, b) => if a > b then a else b
 ```
 
 This only works with **comparable** types: Int, Float, and String.
@@ -255,8 +257,9 @@ Result: `"zebra"`
 
 But not with booleans:
 ```melbi
-max = (a, b) => if a > b then a else b,
-result = max(true, false)  // Error! Can't compare booleans with >
+max(true, false) where {
+  max = (a, b) => if a > b then a else b,
+} // Error! Can't compare booleans with >
 ```
 
 ## Real-World Examples
@@ -356,25 +359,6 @@ reversed where {
 ```
 
 The type: "for any type T, takes Array[T] and returns Array[T]". Input and output have the same element type.
-
-## Why Generics Matter
-
-Without generics, you'd need separate functions for each type:
-
-```melbi
-// Hypothetical non-generic world (not real Melbi):
-id_int = (x: Int) => x
-id_float = (x: Float) => x
-id_string = (x: String) => x
-id_bool = (x: Bool) => x
-
-wrap_int = (x: Int) => [x]
-wrap_float = (x: Float) => [x]
-wrap_string = (x: String) => [x]
-// ... and so on
-```
-
-That's tedious, error-prone, and hard to maintain! Generics let you write code once and reuse it with any type.
 
 ## Advanced Note: Type Theory
 

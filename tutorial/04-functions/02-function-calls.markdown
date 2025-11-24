@@ -31,8 +31,8 @@ While you define your own lambdas with lowercase names, functions from packages 
 
 ```melbi
 my_double(stdlib_abs) where {
-  my_double = (x) => x * 2.,     // Your lambda (lowercase)
-  stdlib_abs = Math.Abs(-5.0),   // Package function (capitalized)
+    my_double = (x) => x * 2., // Your lambda (lowercase)
+    stdlib_abs = Math.Abs(-5.0), // Package function (capitalized)
 }
 ```
 
@@ -103,8 +103,8 @@ Every function returns a value. You can use that value in larger expressions:
 
 ```melbi
 squared where {
-  base = Math.Abs(-10.0),
-  squared = Math.Pow(base, 2.0),
+    base = Math.Abs(-10.0),
+    squared = Math.Pow(base, 2.0),
 }
 ```
 
@@ -128,9 +128,9 @@ For readability, you can use `where` bindings:
 
 ```melbi
 root where {
-  negative = -16.0,
-  positive = Math.Abs(negative),
-  root = Math.Sqrt(positive),
+    negative = -16.0,
+    positive = Math.Abs(negative),
+    root = Math.Sqrt(positive),
 }
 ```
 
@@ -201,9 +201,9 @@ Pay attention to return types! Some functions return a different type than they 
 
 ```melbi
 doubled where {
-  text = "Hello, world!",
-  length = String.Len(text),     // String => Int
-  doubled = length * 2,          // Can do math with Int
+    text = "Hello, world!",
+    length = String.Len(text), // String => Int
+    doubled = length * 2, // Can do math with Int
 }
 ```
 
@@ -215,8 +215,8 @@ You can build your own functions that use package functions:
 
 ```melbi
 distance where {
-  hypotenuse = (a, b) => Math.Sqrt(a * a + b * b),
-  distance = hypotenuse(3.0, 4.0),
+    hypotenuse = (a, b) => Math.Sqrt(a * a + b * b),
+    distance = hypotenuse(3.0, 4.0),
 }
 ```
 
@@ -228,8 +228,8 @@ Another example:
 
 ```melbi
 clean where {
-  normalize = (text) => String.Lower(String.Trim(text)),
-  clean = normalize("  HELLO@EXAMPLE.COM  "),
+    normalize = (text) => String.Lower(String.Trim(text)),
+    clean = normalize("  HELLO@EXAMPLE.COM  "),
 }
 ```
 
@@ -241,17 +241,13 @@ Beyond the standard library, the application embedding Melbi can provide custom 
 
 ```melbi
 // Example: A network filtering tool might provide:
-Packet.GetSourceIP()
-Packet.GetDestPort()
-Packet.GetProtocol()
+Packet.GetSourceIP()Packet.GetDestPort()Packet.GetProtocol()
 
 // Example: A spreadsheet might provide:
-Cell.Value("A1")
-Cell.Formula("B2")
+Cell.Value("A1")Cell.Formula("B2")
 
 // Example: An email system might provide:
-Email.GetSender()
-Email.GetSubject()
+Email.GetSender()Email.GetSubject()
 ```
 
 These work exactly like standard library functions—capitalized names, same calling syntax, type-safe.
@@ -262,12 +258,12 @@ Melbi checks that your function arguments match the parameter types:
 
 This works:
 ```melbi
-Math.Sqrt(16.0)  // Float argument for Float parameter ✓
+Math.Sqrt(16.0) // Float argument for Float parameter ✓
 ```
 
 This doesn't:
 ```melbi
-Math.Sqrt("hello")  // String argument for Float parameter ✗
+Math.Sqrt("hello") // String argument for Float parameter ✗
 ```
 
 The type checker catches this before your code runs, preventing errors!
@@ -278,9 +274,9 @@ The type checker catches this before your code runs, preventing errors!
 
 ```melbi
 rounded where {
-  celsius = 25.0,
-  fahrenheit = (celsius * 9.0 / 5.0) + 32.0,
-  rounded = Math.Round(fahrenheit),
+    celsius = 25.0,
+    fahrenheit = (celsius * 9.0 / 5.0) + 32.0,
+    rounded = Math.Round(fahrenheit),
 }
 ```
 
@@ -290,12 +286,14 @@ Result: `77` (note: Int because Round returns Int)
 
 ```melbi
 distance where {
-  x1 = 0.0, y1 = 0.0,
-  x2 = 3.0, y2 = 4.0,
-  dx = x2 - x1,
-  dy = y2 - y1,
-  distance_squared = (dx * dx + dy * dy),
-  distance = Math.Sqrt(distance_squared)
+    x1 = 0.0,
+    y1 = 0.0,
+    x2 = 3.0,
+    y2 = 4.0,
+    dx = x2 - x1,
+    dy = y2 - y1,
+    distance_squared = (dx * dx + dy * dy),
+    distance = Math.Sqrt(distance_squared),
 }
 ```
 
@@ -305,12 +303,12 @@ Result: `5.0` (the classic 3-4-5 triangle!)
 
 ```melbi
 is_valid where {
-  email = "  USER@EXAMPLE.COM  ",
-  trimmed = String.Trim(email),
-  normalized = String.Lower(trimmed),
-  has_at = "@" in normalized,
-  has_dot = "." in normalized,
-  is_valid = has_at and has_dot
+    email = "  USER@EXAMPLE.COM  ",
+    trimmed = String.Trim(email),
+    normalized = String.Lower(trimmed),
+    has_at = "@" in normalized,
+    has_dot = "." in normalized,
+    is_valid = has_at and has_dot,
 }
 ```
 

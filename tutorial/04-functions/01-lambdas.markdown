@@ -64,7 +64,7 @@ Result: `7`
 
 ```melbi
 greet("Alice", "morning") where {
-  greet = (name, time) => f"Good {time}, {name}!"
+    greet = (name, time) => f"Good { time }, { name }!",
 }
 ```
 
@@ -102,11 +102,11 @@ The body can be any expression, including where bindings:
 
 ```melbi
 calculate(5, 3) where {
-  calculate = (a, b) => result where {
-    sum = a + b,
-    product = a * b,
-    result = sum + product
-  }
+    calculate = (a, b) => result where {
+        sum = a + b,
+        product = a * b,
+        result = sum + product,
+    },
 }
 ```
 
@@ -118,9 +118,9 @@ Result: `23` (5+3=8, 5×3=15, 8+15=23)
 
 ```melbi
 fahrenheit where {
-  celsius_to_fahrenheit = (c) => (c * 9.0 / 5.0) + 32.0,
-  celsius = 25,
-  fahrenheit = celsius_to_fahrenheit(celsius)
+    celsius_to_fahrenheit = (c) => (c * 9.0 / 5.0) + 32.0,
+    celsius = 25,
+    fahrenheit = celsius_to_fahrenheit(celsius),
 }
 ```
 
@@ -128,9 +128,8 @@ fahrenheit where {
 
 ```melbi
 distance where {
-  calculate_distance = (x1, y1, x2, y2) => 
-    ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5,
-  distance = calculate_distance(0, 0, 3, 4)
+    calculate_distance = (x1, y1, x2, y2) => ((x2 - x1) ^ 2 + (y2 - y1) ^ 2) ^ 0.5,
+    distance = calculate_distance(0, 0, 3, 4),
 }
 ```
 
@@ -140,9 +139,8 @@ Result: `5.0` (the 3-4-5 triangle!)
 
 ```melbi
 final_price where {
-  apply_discount = (price, discount_percent) =>
-    price * (1.0 - discount_percent / 100.0),
-  final_price = apply_discount(100.0, 15.0)
+    apply_discount = (price, discount_percent) => price * (1.0 - discount_percent / 100.0),
+    final_price = apply_discount(100.0, 15.0),
 }
 ```
 
@@ -152,8 +150,8 @@ Result: `85.0`
 
 ```melbi
 display_name where {
-  format_name = (first, last) => f"{first} {last}",
-  display_name = format_name("John", "Doe")
+    format_name = (first, last) => f"{ first } { last }",
+    display_name = format_name("John", "Doe"),
 }
 ```
 
@@ -163,9 +161,9 @@ A lambda can return another lambda:
 
 ```melbi
 add_five where {
-  make_adder = (x) => (y) => x + y,
-  add_five = make_adder(5),
-  result = add_five(10)
+    make_adder = (x) => (y) => x + y,
+    add_five = make_adder(5),
+    result = add_five(10),
 }
 ```
 
@@ -177,10 +175,10 @@ Another example:
 
 ```melbi
 result where {
-  multiply = (x) => (y) => x * y,
-  double = multiply(2),
-  triple = multiply(3),
-  result = double(5) + triple(5)
+    multiply = (x) => (y) => x * y,
+    double = multiply(2),
+    triple = multiply(3),
+    result = double(5) + triple(5),
 }
 ```
 
@@ -190,11 +188,10 @@ Result: `25` (10 + 15)
 
 ```melbi
 message where {
-  greet = (name, is_member) =>
-    if is_member
-    then f"Welcome back, {name}!"
-    else f"Hello, {name}!",
-  message = greet("Alice", true)
+    greet = (name, is_member) => if is_member
+    then f"Welcome back, { name }!"
+    else f"Hello, { name }!",
+    message = greet("Alice", true),
 }
 ```
 
@@ -202,11 +199,11 @@ message where {
 
 ```melbi
 result where {
-  describe = (opt) => opt match {
-    some value -> f"Got: {value}",
-    none -> "Got nothing"
-  },
-  result = describe(some 42)
+    describe = (opt) => opt match {
+        some value -> f"Got: { value }",
+        none -> "Got nothing",
+    },
+    result = describe(some 42),
 }
 ```
 
@@ -216,9 +213,8 @@ result where {
 
 ```melbi
 is_valid where {
-  validate_email = (email) =>
-    "@" in email and "." in email,
-  is_valid = validate_email("user@example.com")
+    validate_email = (email) => "@" in email and "." in email,
+    is_valid = validate_email("user@example.com"),
 }
 ```
 
@@ -226,9 +222,8 @@ is_valid where {
 
 ```melbi
 total where {
-  calculate_total = (price, quantity, tax_rate) =>
-    price * quantity * (1.0 + tax_rate),
-  total = calculate_total(29.99, 3, 0.08)
+    calculate_total = (price, quantity, tax_rate) => price * quantity * (1.0 + tax_rate),
+    total = calculate_total(29.99, 3, 0.08),
 }
 ```
 
@@ -236,9 +231,8 @@ total where {
 
 ```melbi
 can_edit where {
-  has_permission = (role, resource) =>
-    role == "admin" or (role == "editor" and resource == "post"),
-  can_edit = has_permission("editor", "post")
+    has_permission = (role, resource) => role == "admin" or (role == "editor" and resource == "post"),
+    can_edit = has_permission("editor", "post"),
 }
 ```
 
@@ -246,9 +240,8 @@ can_edit where {
 
 ```melbi
 final_score where {
-  calculate_score = (correct, total) =>
-    ((correct as Float) / (total as Float)) * 100.0,
-  final_score = calculate_score(17, 20)
+    calculate_score = (correct, total) => ((correct as Float) / (total as Float)) * 100.0,
+    final_score = calculate_score(17, 20),
 }
 ```
 
@@ -256,11 +249,11 @@ final_score where {
 
 ```melbi
 result where {
-  add = (x, y) => x + y,
-  multiply = (x, y) => x * y,
-  square = (x) => multiply(x, x),
-  sum_of_squares = (a, b) => add(square(a), square(b)),
-  result = sum_of_squares(3, 4)
+    add = (x, y) => x + y,
+    multiply = (x, y) => x * y,
+    square = (x) => multiply(x, x),
+    sum_of_squares = (a, b) => add(square(a), square(b)),
+    result = sum_of_squares(3, 4),
 }
 ```
 
@@ -271,27 +264,25 @@ Result: `25` (3²+4²=9+16=25)
 **Without lambdas:**
 ```melbi
 result where {
-  a = 5,
-  b = 3,
-  sum_a_b = a + b,
-  product_a_b = a * b,
-  final_a_b = sum_a_b + product_a_b,
-  
-  c = 10,
-  d = 7,
-  sum_c_d = c + d,
-  product_c_d = c * d,
-  final_c_d = sum_c_d + product_c_d,
-  
-  result = final_a_b + final_c_d
+    a = 5,
+    b = 3,
+    sum_a_b = a + b,
+    product_a_b = a * b,
+    final_a_b = sum_a_b + product_a_b,
+    c = 10,
+    d = 7,
+    sum_c_d = c + d,
+    product_c_d = c * d,
+    final_c_d = sum_c_d + product_c_d,
+    result = final_a_b + final_c_d,
 }
 ```
 
 **With lambdas:**
 ```melbi
 result where {
-  calculate = (x, y) => (x + y) + (x * y),
-  result = calculate(5, 3) + calculate(10, 7)
+    calculate = (x, y) => (x + y) + (x * y),
+    result = calculate(5, 3) + calculate(10, 7),
 }
 ```
 
@@ -303,10 +294,10 @@ You can pass lambdas around just like numbers or strings:
 
 ```melbi
 result where {
-  double = (x) => x * 2,
-  triple = (x) => x * 3,
-  operation = double,
-  result = operation(5)
+    double = (x) => x * 2,
+    triple = (x) => x * 3,
+    operation = double,
+    result = operation(5),
 }
 ```
 
@@ -320,11 +311,10 @@ Change `operation = triple` and you'd get `15` instead!
 
 ```melbi
 greeting where {
-  make_greeter = (greeting_word) =>
-    (name) => f"{greeting_word}, {name}!",
-  say_hello = make_greeter("Hello"),
-  say_hi = make_greeter("Hi"),
-  greeting = say_hello("Alice")
+    make_greeter = (greeting_word) => (name) => f"{ greeting_word }, { name }!",
+    say_hello = make_greeter("Hello"),
+    say_hi = make_greeter("Hi"),
+    greeting = say_hello("Alice"),
 }
 ```
 
@@ -332,9 +322,9 @@ greeting where {
 
 ```melbi
 result where {
-  add_ten = (x) => x + 10,
-  double = (x) => x * 2,
-  result = double(add_ten(5))
+    add_ten = (x) => x + 10,
+    double = (x) => x * 2,
+    result = double(add_ten(5)),
 }
 ```
 
@@ -344,9 +334,8 @@ Result: `30` (5+10=15, 15×2=30)
 
 ```melbi
 url where {
-  build_url = (protocol, host, path) =>
-    f"{protocol}://{host}/{path}",
-  url = build_url("https", "api.example.com", "v1/users")
+    build_url = (protocol, host, path) => f"{ protocol }://{ host }/{ path }",
+    url = build_url("https", "api.example.com", "v1/users"),
 }
 ```
 
