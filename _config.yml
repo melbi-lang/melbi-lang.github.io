@@ -24,6 +24,9 @@ url: "https://melbi.dev"
 baseurl: ""
 github_username: melbi-lang
 
+ga_tracking: G-1L39527HPC
+ga_tracking_anonymize_ip: true
+
 callouts_level: quiet
 callouts:
   highlight:
