@@ -5,7 +5,7 @@ parent: Basics
 nav_order: 3
 permalink: /tutorial/basics/strings/
 code_sample: |
-  f"Hello {name}!" where { name = "Alice" }
+  f"Hello { name }!" where { name = "Alice" }
 ---
 
 # Strings and Format Strings

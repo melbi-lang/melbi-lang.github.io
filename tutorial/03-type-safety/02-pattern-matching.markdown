@@ -5,8 +5,12 @@ parent: Type Safety
 nav_order: 2
 permalink: /tutorial/type-safety/pattern-matching/
 code_sample: |
-  status match { 200 -> "OK", 404 -> "Not Found", 500 -> "Error", _ -> "Unknown" }
-  where { status = 404 }
+  status match {
+      200 -> "OK",
+      404 -> "Not Found",
+      500 -> "Error",
+      _ -> "Unknown",
+  } where { status = 404 }
 ---
 
 # Pattern Matching

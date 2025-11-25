@@ -5,7 +5,8 @@ parent: Functions
 nav_order: 2
 permalink: /tutorial/functions/generic-functions/
 code_sample: |
-  { int = id(42), str = id("hello"), bool = id(true) } where { id = (x) => x }
+  { int = id(42), str = id("hello"), bool = id(true) }
+  where { id = (x) => x }
 ---
 
 # Generic Functions

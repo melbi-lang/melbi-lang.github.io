@@ -5,7 +5,7 @@ parent: Basics
 nav_order: 2
 permalink: /tutorial/basics/where-bindings/
 code_sample: |
-  total where { price = 100, tax = 0.08, total = price * (1 + tax) }
+  price * (1. + tax) where { price = 100., tax = 0.08 }
 ---
 
 # Where Bindings

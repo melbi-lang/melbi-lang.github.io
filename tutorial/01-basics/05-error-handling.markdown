@@ -5,7 +5,10 @@ parent: Basics
 nav_order: 5
 permalink: /tutorial/basics/error-handling/
 code_sample: |
-  items[index] otherwise "Not found" where { items = ["a", "b", "c"], index = 10 }
+  items[index] otherwise "Not found" where {
+      items = ["a", "b", "c"],
+      index = 10,
+  }
 ---
 
 # Error Handling with Otherwise

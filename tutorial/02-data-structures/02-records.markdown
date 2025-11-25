@@ -5,7 +5,9 @@ parent: Data Structures
 nav_order: 2
 permalink: /tutorial/data-structures/records/
 code_sample: |
-  user.name where { user = { name = "Alice", age = 30, active = true } }
+  user.name where {
+      user = { name = "Alice", age = 30, active = true },
+  }
 ---
 
 # Records

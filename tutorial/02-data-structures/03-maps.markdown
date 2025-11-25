@@ -5,7 +5,10 @@ parent: Data Structures
 nav_order: 3
 permalink: /tutorial/data-structures/maps/
 code_sample: |
-  prices[product] where { prices = { "apple": 1.50, "banana": 0.75 }, product = "apple" }
+  prices[product] where {
+      prices = { "apple": 1.50, "banana": 0.75 },
+      product = "apple",
+  }
 ---
 
 # Maps

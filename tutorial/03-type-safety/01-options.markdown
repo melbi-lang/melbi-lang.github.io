@@ -5,7 +5,10 @@ parent: Type Safety
 nav_order: 1
 permalink: /tutorial/type-safety/options/
 code_sample: |
-  result match { some value -> value * 2, none -> 0 } where { result = some 42 }
+  result match {
+      some value -> value * 2,
+      none -> 0,
+  } where { result = some 42 }
 ---
 
 # Options

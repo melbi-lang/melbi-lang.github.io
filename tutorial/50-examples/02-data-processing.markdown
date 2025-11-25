@@ -5,9 +5,13 @@ parent: Examples
 nav_order: 2
 permalink: /tutorial/examples/data-processing/
 code_sample: |
-  { product = order.product, line_total = (order.quantity as Float) * order.price }
-  where {
-      order = { product = "Widget", quantity = 5, price = 10.0 },
+  {
+      product = order.product,
+      line_total = (order.quantity as Float) * order.price,
+  } where {
+      order = {
+          product = "Widget", quantity = 5, price = 10.0,
+      },
   }
 ---
 
