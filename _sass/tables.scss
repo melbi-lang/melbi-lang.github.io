@@ -24,7 +24,7 @@ td {
   min-width: 7.5rem;
   padding: $sp-2 $sp-3;
   background-color: $table-background-color;
-  border-bottom: $border rgba($border-color, 0.5);
+  border-bottom: $border color-mix(in srgb, var(--border-color) 50%, transparent);
   border-left: $border $border-color;
 
   @include fs-3;
