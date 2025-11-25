@@ -24,7 +24,7 @@ url: "https://melbi.dev"
 baseurl: ""
 github_username: melbi-lang
 
-callouts_level: quiet # or loud
+callouts_level: quiet
 callouts:
   highlight:
     color: yellow
@@ -44,10 +44,9 @@ callouts:
     title: Advanced
     color: yellow
 
-#sass:
-#  style: compressed
+sass:
+  style: compressed
 
-# color_scheme: light  # ignored: set in _includes/head.html
 color_scheme: melbi
 markdown: kramdown
 theme: just-the-docs
