@@ -9,9 +9,9 @@ permalink: /tutorial/examples/
 
 # Examples
 
-Practical examples showing Melbi in action for real-world tasks.
+Practical examples showing Melbi in action for real-world tasks—things that regex can't handle.
 
 **In this section:**
-- **Form Validation** - Validating user input and form fields
-- **Data Transformation** - Reshaping and cleaning data
-- **Calculations** - Complex business logic and computations
+- **Business Rules** - Access control, pricing tiers, eligibility checks
+- **Data Processing** - Filtering, transforming, and aggregating collections
+- **Cross-field Validation** - Validating relationships between fields

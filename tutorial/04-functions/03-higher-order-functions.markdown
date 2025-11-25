@@ -192,34 +192,28 @@ Higher-order functions are great for creating specialized functions:
 ### Comparison functions
 
 ```melbi
-{
-    gt_10 = greater_than(10),
-    gt_100 = greater_than(100),
-    test1 = gt_10(15),
-    test2 = gt_100(50),
-}
+{ test1 = gt_10(15), test2 = gt_100(50) }
 where {
     greater_than = (threshold) => (x) => x > threshold,
+    gt_10 = greater_than(10),
+    gt_100 = greater_than(100),
 }
 ```
 
-Result: `{ gt_10 = ..., gt_100 = ..., test1 = true, test2 = false }`
+Result: `{ test1 = true, test2 = false }`
 
 ### String matchers
 
 ```melbi
-{
-    starts_with_a = starts_with("a"),
-    starts_with_hello = starts_with("hello"),
-    test1 = starts_with_a("apple"),
-    test2 = starts_with_hello("hello world"),
-}
+{ test1 = starts_with_a("apple"), test2 = starts_with_hello("hello world") }
 where {
     starts_with = (prefix) => (s) => String.StartsWith(s, prefix),
+    starts_with_a = starts_with("a"),
+    starts_with_hello = starts_with("hello"),
 }
 ```
 
-Result: `{ ..., test1 = true, test2 = true }`
+Result: `{ test1 = true, test2 = true }`
 
 ## Other useful patterns
 
@@ -253,18 +247,20 @@ Result: `{ any_negative = false, all_positive = true }`
 ### Sort by a key
 
 ```melbi
-Array.SortBy(people, (p) => p.age) where {
-    people = [
-        { name = "Alice", age = 30 },
-        { name = "Bob", age = 25 },
-        { name = "Carol", age = 35 },
+Array.SortBy(scores, (s) => s["score"]) where {
+    scores = [
+        {"id": 1, "score": 85},
+        {"id": 2, "score": 92},
+        {"id": 3, "score": 78},
     ],
 }
 ```
 
-Result: `[{ name = "Bob", age = 25 }, { name = "Alice", age = 30 }, { name = "Carol", age = 35 }]`
+Result: `[{"id": 3, "score": 78}, {"id": 1, "score": 85}, {"id": 2, "score": 92}]`
 
 Type: `(Array[E], (E) => K) => Array[E]` where K is comparable
+
+The function extracts a comparison key from each element. Here we sort maps by their `"score"` value.
 
 ## Why higher-order functions?
 
