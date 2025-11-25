@@ -1,0 +1,116 @@
+@import "./color_schemes/light";
+
+// Light theme CSS variables
+:root {
+    --body-background-color: #{$white};
+    --body-heading-color: #{$grey-dk-300};
+    --body-text-color: #{$grey-dk-100};
+    --link-color: #{$purple-000};
+    --link-color-dark-2: #{darken($purple-000, 2%)};
+    --link-color-dark-4: #{darken($purple-000, 4%)};
+    --nav-child-link-color: #{$grey-dk-100};
+    --sidebar-color: #{$grey-lt-000};
+    --base-button-color: #f7f7f7;
+    --base-button-color-dark-1: #{darken(#f7f7f7, 1%)};
+    --base-button-color-dark-3: #{darken(#f7f7f7, 3%)};
+    --btn-primary-color: #{$purple-100};
+    --btn-primary-color-dark-2: #{darken($purple-100, 2%)};
+    --btn-primary-color-dark-4: #{darken($purple-100, 4%)};
+    --btn-primary-color-dark-5: #{darken($purple-100, 5%)};
+    --btn-primary-color-dark-10: #{darken($purple-100, 10%)};
+    --btn-primary-color-light-2: #{lighten($purple-100, 2%)};
+    --btn-primary-color-light-5: #{lighten($purple-100, 5%)};
+    --code-background-color: #{$grey-lt-000};
+    --feedback-color: #{darken($grey-lt-000, 3%)};
+    --table-background-color: #{$white};
+    --search-background-color: #{$white};
+    --search-result-preview-color: #{$grey-dk-000};
+    --border-color: #{$grey-lt-100};
+    --melbi-input-background-color: #{darken($white, 1%)};
+}
+
+// Dark theme CSS variables
+:root[data-theme="dark"] {
+    --body-background-color: #{$grey-dk-300};
+    --body-heading-color: #{$grey-lt-000};
+    --body-text-color: #{$grey-lt-300};
+    --link-color: #{$blue-000};
+    --link-color-dark-2: #{darken($blue-000, 2%)};
+    --link-color-dark-4: #{darken($blue-000, 4%)};
+    --nav-child-link-color: #{$grey-dk-000};
+    --sidebar-color: #{$grey-dk-300};
+    --base-button-color: #{$grey-dk-250};
+    --base-button-color-dark-1: #{darken($grey-dk-250, 1%)};
+    --base-button-color-dark-3: #{darken($grey-dk-250, 3%)};
+    --btn-primary-color: #{$blue-200};
+    --btn-primary-color-dark-2: #{darken($blue-200, 2%)};
+    --btn-primary-color-dark-4: #{darken($blue-200, 4%)};
+    --btn-primary-color-dark-5: #{darken($blue-200, 5%)};
+    --btn-primary-color-dark-10: #{darken($blue-200, 10%)};
+    --btn-primary-color-light-2: #{lighten($blue-200, 2%)};
+    --btn-primary-color-light-5: #{lighten($blue-200, 5%)};
+    --code-background-color: #31343f;
+    --code-linenumber-color: #dee2f7;
+    --feedback-color: #{darken($grey-dk-300, 3%)};
+    --table-background-color: #{$grey-dk-250};
+    --search-background-color: #{$grey-dk-250};
+    --search-result-preview-color: #{$grey-dk-000};
+    --border-color: #{$grey-dk-200};
+    --melbi-input-background-color: #{darken($grey-dk-300, 1%)};
+
+    @import "./vendor/OneDarkJekyll/syntax";
+}
+
+// SASS variable aliases (used throughout existing codebase)
+$color-scheme: normal;
+$body-background-color: var(--body-background-color);
+$body-heading-color: var(--body-heading-color);
+$body-text-color: var(--body-text-color);
+$link-color: var(--link-color);
+$nav-child-link-color: var(--nav-child-link-color);
+$sidebar-color: var(--sidebar-color);
+$base-button-color: var(--base-button-color);
+$btn-primary-color: var(--btn-primary-color);
+$code-background-color: var(--code-background-color);
+$code-linenumber-color: var(--code-linenumber-color);
+$feedback-color: var(--feedback-color);
+$table-background-color: var(--table-background-color);
+$search-background-color: var(--search-background-color);
+$search-result-preview-color: var(--search-result-preview-color);
+$border-color: var(--border-color);
+
+/*
+$color-scheme: light !default;
+$body-background-color: $white !default;
+$body-heading-color: $grey-dk-300 !default;
+$body-text-color: $grey-dk-100 !default;
+$link-color: $purple-000 !default;
+$nav-child-link-color: $grey-dk-100 !default;
+$sidebar-color: $grey-lt-000 !default;
+$base-button-color: #f7f7f7 !default;
+$btn-primary-color: $purple-100 !default;
+$code-background-color: $grey-lt-000 !default;
+$feedback-color: darken($sidebar-color, 3%) !default;
+$table-background-color: $white !default;
+$search-background-color: $white !default;
+$search-result-preview-color: $grey-dk-000 !default;
+*/
+
+/*
+$color-scheme: dark;
+$body-background-color: $grey-dk-300;
+$body-heading-color: $grey-lt-000;
+$body-text-color: $grey-lt-300;
+$link-color: $blue-000;
+$nav-child-link-color: $grey-dk-000;
+$sidebar-color: $grey-dk-300;
+$base-button-color: $grey-dk-250;
+$btn-primary-color: $blue-200;
+$code-background-color: #31343f; // OneDarkJekyll default for syntax-one-dark-vivid
+$code-linenumber-color: #dee2f7; // OneDarkJekyll .nf for syntax-one-dark-vivid
+$feedback-color: darken($sidebar-color, 3%);
+$table-background-color: $grey-dk-250;
+$search-background-color: $grey-dk-250;
+$search-result-preview-color: $grey-dk-000;
+$border-color: $grey-dk-200;
+*/
