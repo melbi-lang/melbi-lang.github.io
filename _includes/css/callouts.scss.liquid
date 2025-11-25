@@ -1,0 +1,181 @@
+{%- comment -%}
+  {% include css/callouts.scss.liquid %}
+  produces SCSS for all the callouts in site.callouts.
+  Generates both light and dark theme versions.
+{%- endcomment -%}
+
+div.opaque {
+  background-color: $body-background-color;
+}
+
+{%- comment -%} Light theme callouts {%- endcomment -%}
+{%- assign light_background_hue = "000" -%}
+{%- assign light_color_hue = "300" -%}
+{%- if site.callouts_level == "loud" -%}
+  {%- assign light_background_hue = "300" -%}
+  {%- assign light_color_hue = "000" -%}
+{%- endif -%}
+
+:root {
+{%- for callout in site.callouts %}
+{%- assign callout_opacity = callout[1].opacity | default: site.callouts_opacity | default: 0.2 -%}
+
+  p.{{ callout[0] }}, blockquote.{{ callout[0] }} {
+      background: rgba(${{ callout[1].color }}-{{ light_background_hue }}, {{ callout_opacity }});
+      border-left: $border-radius solid ${{ callout[1].color }}-{{ light_color_hue }};
+      border-radius: $border-radius;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+      padding: .8rem;
+      {% if callout[1].title %}
+      &::before {
+          color: ${{ callout[1].color }}-{{ light_color_hue }};
+          content: "{{ callout[1].title }}";
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+          font-size: .75em;
+          padding-bottom: .125rem;
+      }
+      {% endif %}
+      > .{{ callout[0] }}-title {
+        color: ${{ callout[1].color }}-{{ light_color_hue }};
+        display: block;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: .75em;
+        padding-bottom: .125rem;
+      }
+  }
+
+  p.{{ callout[0] }}-title, blockquote.{{ callout[0] }}-title {
+      background: rgba(${{ callout[1].color }}-{{ light_background_hue }}, {{ callout_opacity }});
+      border-left: $border-radius solid ${{ callout[1].color }}-{{ light_color_hue }};
+      border-radius: $border-radius;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+      padding: .8rem;
+      > p:first-child {
+        margin-top: 0;
+        margin-bottom: 0;
+        color: ${{ callout[1].color }}-{{ light_color_hue }};
+        display: block;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: .75em;
+        padding-bottom: .125rem;
+      }
+  }
+
+  blockquote.{{ callout[0] }} {
+    margin-left: 0;
+    margin-right: 0;
+
+    > p:first-child {
+      margin-top: 0;
+    }
+
+    > p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  blockquote.{{ callout[0] }}-title {
+    margin-left: 0;
+    margin-right: 0;
+
+    > p:nth-child(2) {
+      margin-top: 0;
+    }
+
+    > p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+{% endfor -%}
+}
+
+{%- comment -%} Dark theme callouts (hues reversed unless quiet) {%- endcomment -%}
+{%- assign dark_background_hue = "300" -%}
+{%- assign dark_color_hue = "000" -%}
+{%- if site.callouts_level == "quiet" -%}
+  {%- assign dark_background_hue = "000" -%}
+  {%- assign dark_color_hue = "300" -%}
+{%- endif -%}
+
+:root[data-theme="dark"] {
+{%- for callout in site.callouts %}
+{%- assign callout_opacity = callout[1].opacity | default: site.callouts_opacity | default: 0.2 -%}
+
+  p.{{ callout[0] }}, blockquote.{{ callout[0] }} {
+      background: rgba(${{ callout[1].color }}-{{ dark_background_hue }}, {{ callout_opacity }});
+      border-left: $border-radius solid ${{ callout[1].color }}-{{ dark_color_hue }};
+      border-radius: $border-radius;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+      padding: .8rem;
+      {% if callout[1].title %}
+      &::before {
+          color: ${{ callout[1].color }}-{{ dark_color_hue }};
+          content: "{{ callout[1].title }}";
+          display: block;
+          font-weight: bold;
+          text-transform: uppercase;
+          font-size: .75em;
+          padding-bottom: .125rem;
+      }
+      {% endif %}
+      > .{{ callout[0] }}-title {
+        color: ${{ callout[1].color }}-{{ dark_color_hue }};
+        display: block;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: .75em;
+        padding-bottom: .125rem;
+      }
+  }
+
+  p.{{ callout[0] }}-title, blockquote.{{ callout[0] }}-title {
+      background: rgba(${{ callout[1].color }}-{{ dark_background_hue }}, {{ callout_opacity }});
+      border-left: $border-radius solid ${{ callout[1].color }}-{{ dark_color_hue }};
+      border-radius: $border-radius;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12), 0 3px 10px rgba(0, 0, 0, 0.08);
+      padding: .8rem;
+      > p:first-child {
+        margin-top: 0;
+        margin-bottom: 0;
+        color: ${{ callout[1].color }}-{{ dark_color_hue }};
+        display: block;
+        font-weight: bold;
+        text-transform: uppercase;
+        font-size: .75em;
+        padding-bottom: .125rem;
+      }
+  }
+
+  blockquote.{{ callout[0] }} {
+    margin-left: 0;
+    margin-right: 0;
+
+    > p:first-child {
+      margin-top: 0;
+    }
+
+    > p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  blockquote.{{ callout[0] }}-title {
+    margin-left: 0;
+    margin-right: 0;
+
+    > p:nth-child(2) {
+      margin-top: 0;
+    }
+
+    > p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+{% endfor -%}
+}
