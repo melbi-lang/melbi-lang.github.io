@@ -40,6 +40,9 @@ callouts:
   todo:
     title: TODO
     color: red
+  advanced:
+    title: Advanced
+    color: yellow
 
 #sass:
 #  style: compressed
