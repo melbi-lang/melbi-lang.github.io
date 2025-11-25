@@ -186,19 +186,19 @@
                     <!-- Desktop Menu -->
                     <div class="hidden md:flex items-center space-x-8">
                         <a
-                            href="#features"
+                            href="/features/"
                             class="text-sm font-medium hover:text-jtd-primary transition-colors"
                             >Features</a
                         >
                         <a
-                            href="#showcase"
+                            href="/tutorial/"
                             class="text-sm font-medium hover:text-jtd-primary transition-colors"
-                            >Code</a
+                            >Tutorial</a
                         >
                         <a
-                            href="#docs"
+                            href="/community/"
                             class="text-sm font-medium hover:text-jtd-primary transition-colors"
-                            >Docs</a
+                            >Community</a
                         >
                         <a
                             href="https://github.com/melbi-lang/melbi"
@@ -221,13 +221,6 @@
                                 class="w-5 h-5 block dark:hidden"
                             ></i>
                         </button>
-
-                        <a
-                            href="/documentation"
-                            class="px-4 py-2 text-sm font-bold text-white bg-jtd-primary hover:bg-jtd-primaryHover rounded-md transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
-                        >
-                            Get Started
-                        </a>
                     </div>
 
                     <!-- Mobile Menu Button -->
@@ -264,24 +257,24 @@
             >
                 <div class="px-4 pt-2 pb-4 space-y-2">
                     <a
-                        href="#features"
+                        href="/features/"
                         class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/5 hover:text-jtd-primary"
                         >Features</a
                     >
                     <a
-                        href="#showcase"
+                        href="/tutorial/"
                         class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/5 hover:text-jtd-primary"
-                        >Code</a
+                        >Tutorial</a
                     >
                     <a
-                        href="/documentation"
+                        href="/community/"
                         class="block px-3 py-2 rounded-md text-base font-medium hover:bg-black/5 dark:hover:bg-white/5 hover:text-jtd-primary"
-                        >Documentation</a
+                        >Community</a
                     >
                     <a
                         href="https://github.com/melbi-lang/melbi"
                         class="block px-3 py-2 rounded-md text-base font-medium text-jtd-primary"
-                        >GitHub Repo</a
+                        >GitHub</a
                     >
                 </div>
             </div>
@@ -344,17 +337,21 @@
                     class="mt-10 flex flex-col sm:flex-row justify-center gap-4"
                 >
                     <a
-                        href="/documentation"
+                        href="/tutorial/"
                         class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-jtd-primary rounded-lg hover:bg-jtd-primaryHover transition-all shadow-lg hover:scale-105"
                     >
-                        Start Embedding Now
-                        <i data-lucide="arrow-right" class="ml-2 w-5 h-5"></i>
+                        Start the Tutorial
+                        <i
+                            data-lucide="graduation-cap"
+                            class="ml-2 w-5 h-5"
+                        ></i>
                     </a>
                     <a
-                        href="#features"
+                        href="/features/"
                         class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-jtd-heading bg-transparent border border-jtd-border rounded-lg hover:bg-jtd-heading/5 transition-all hover:scale-105"
                     >
-                        See How it Works
+                        <i data-lucide="text-search" class="mr-2 w-5 h-5"></i>
+                        Explore Features
                     </a>
                 </div>
             </div>
@@ -520,7 +517,7 @@
                             </div>
                         </div>
 
-                        <div class="flex items-start gap-4">
+                        <div class="flex items-start gap-4 mb-8">
                             <div
                                 class="flex-shrink-0 w-6 h-6 mt-1 rounded-full bg-jtd-primary/20 flex items-center justify-center"
                             >
@@ -542,6 +539,18 @@
                                     infers types wherever possible.
                                 </p>
                             </div>
+                        </div>
+                        <div class="text-center">
+                            <a
+                                href="/tutorial/examples/"
+                                class="inline-flex items-center justify-center px-8 py-4 text-base font-semibold text-jtd-heading bg-transparent border border-jtd-border rounded-lg hover:bg-jtd-heading/5 transition-all hover:scale-105"
+                            >
+                                See More Examples
+                                <i
+                                    data-lucide="arrow-right"
+                                    class="ml-2 w-4 h-4"
+                                ></i>
+                            </a>
                         </div>
                     </div>
 
@@ -612,16 +621,16 @@ user.country <span class="token-punctuation">==</span> <span class="token-string
                 <p
                     class="text-lg text-jtd-text mb-10 max-w-2xl mx-auto transition-colors duration-300"
                 >
-                    Explore the full Melbi documentation, tutorials, and
-                    examples on integrating Melbi into your project.
+                    Melbi is in active alpha development. Try it out, report
+                    bugs, and help shape the language.
                 </p>
                 <div class="flex flex-col sm:flex-row justify-center gap-4">
                     <a
-                        href="/documentation"
+                        href="/community/"
                         class="inline-flex items-center justify-center px-8 py-4 text-base font-bold text-white bg-jtd-primary rounded-lg hover:bg-jtd-primaryHover transition-all shadow-lg"
                     >
-                        Read the Docs
-                        <i data-lucide="book-open" class="ml-2 w-4 h-4"></i>
+                        Get Involved
+                        <i data-lucide="users" class="ml-2 w-4 h-4"></i>
                     </a>
                     <a
                         href="https://github.com/melbi-lang/melbi"
@@ -653,19 +662,9 @@ user.country <span class="token-punctuation">==</span> <span class="token-string
                 </div>
                 <div class="flex space-x-6 mt-4 md:mt-0">
                     <a
-                        href="#"
-                        class="text-gray-500 hover:text-jtd-primary transition-colors"
-                        ><i data-lucide="twitter" class="w-4 h-4"></i
-                    ></a>
-                    <a
-                        href="#"
+                        href="https://github.com/melbi-lang/melbi"
                         class="text-gray-500 hover:text-jtd-primary transition-colors"
                         ><i data-lucide="github" class="w-4 h-4"></i
-                    ></a>
-                    <a
-                        href="#"
-                        class="text-gray-500 hover:text-jtd-primary transition-colors"
-                        ><i data-lucide="slack" class="w-4 h-4"></i
                     ></a>
                 </div>
             </div>
