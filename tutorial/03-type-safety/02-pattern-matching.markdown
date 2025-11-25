@@ -300,65 +300,69 @@ message where {
 ### Payment processing
 
 ```melbi
-result where {
+payment_status match {
+    "completed" -> f"Payment of ${ amount } successful",
+    "pending" -> "Payment is being processed",
+    "failed" -> "Payment failed, please try again",
+    "refunded" -> f"Refund of ${ amount } issued",
+    _ -> "Unknown payment status",
+}
+where {
     payment_status = "completed",
     amount = 99.99,
-    message = payment_status match {
-        "completed" -> f"Payment of ${ amount } successful",
-        "pending" -> "Payment is being processed",
-        "failed" -> "Payment failed, please try again",
-        "refunded" -> f"Refund of ${ amount } issued",
-        _ -> "Unknown payment status",
-    },
 }
 ```
+
+Result: `"Payment of $99.99 successful"`
 
 ### File type detection
 
 ```melbi
-description where {
-    extension = ".jpg",
-    file_type = extension match {
-        ".jpg" -> "JPEG Image",
-        ".png" -> "PNG Image",
-        ".gif" -> "GIF Image",
-        ".pdf" -> "PDF Document",
-        ".txt" -> "Text File",
-        _ -> "Unknown File Type",
-    },
+extension match {
+    ".jpg" -> "JPEG Image",
+    ".png" -> "PNG Image",
+    ".gif" -> "GIF Image",
+    ".pdf" -> "PDF Document",
+    ".txt" -> "Text File",
+    _ -> "Unknown File Type",
 }
+where { extension = ".jpg" }
 ```
+
+Result: `"JPEG Image"`
 
 ### Game action handling
 
 ```melbi
-result where {
+action match {
+    "attack" -> f"Dealt { damage } damage",
+    "defend" -> "Raised shield",
+    "heal" -> "Restored health",
+    "flee" -> "Ran away",
+    _ -> "Invalid action",
+}
+where {
     action = "attack",
     damage = 50,
-    result = action match {
-        "attack" -> f"Dealt { damage } damage",
-        "defend" -> "Raised shield",
-        "heal" -> "Restored health",
-        "flee" -> "Ran away",
-        _ -> "Invalid action",
-    },
 }
 ```
+
+Result: `"Dealt 50 damage"`
 
 ### API error codes
 
 ```melbi
-user_message where {
-    error_code = "AUTH_FAILED",
-    user_message = error_code match {
-        "AUTH_FAILED" -> "Invalid username or password",
-        "RATE_LIMITED" -> "Too many requests, please wait",
-        "NOT_FOUND" -> "Resource not found",
-        "NETWORK_ERROR" -> "Connection failed",
-        _ -> "An error occurred",
-    },
+error_code match {
+    "AUTH_FAILED" -> "Invalid username or password",
+    "RATE_LIMITED" -> "Too many requests, please wait",
+    "NOT_FOUND" -> "Resource not found",
+    "NETWORK_ERROR" -> "Connection failed",
+    _ -> "An error occurred",
 }
+where { error_code = "AUTH_FAILED" }
 ```
+
+Result: `"Invalid username or password"`
 
 ## Pattern matching vs if-then-else
 

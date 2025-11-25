@@ -200,10 +200,9 @@ You can cast any expression:
 Sometimes you need to convert back and forth:
 
 ```melbi
-result where {
+float_calc as Int where {
     int_value = 42,
     float_calc = (int_value as Float) * 1.5,
-    back_to_int = float_calc as Int,
 }
 ```
 

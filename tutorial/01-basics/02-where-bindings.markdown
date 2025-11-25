@@ -52,7 +52,7 @@ Think of it like solving a math problem where you're given some values first, th
 You can define as many names as you need, separated by commas:
 
 ```melbi
-result where { a = 5, b = 10, c = 15, result = a + b + c }
+a + b + c where { a = 5, b = 10, c = 15 }
 ```
 
 The names are available to use anywhere after they're defined.
