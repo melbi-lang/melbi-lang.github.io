@@ -599,9 +599,11 @@
                                 </div>
                             </div>
                             <!-- Code Area -->
-                            <div class="code-window p-6 overflow-x-auto">
+                            <div
+                                class="code-window p-3 sm:p-4 md:p-6 overflow-x-auto"
+                            >
                                 <pre
-                                    class="font-mono text-sm md:text-base leading-relaxed"
+                                    class="font-mono text-xs sm:text-sm md:text-base leading-relaxed"
                                 ><code><span class="token-comment">// A/B test rollout decision</span>
 user.country <span class="token-punctuation">==</span> <span class="token-string">"US"</span> <span class="token-keyword">and</span> user.age <span class="token-punctuation">&gt;=</span> 18 <span class="token-keyword">and</span>
 <span class="token-function">Hash.ConsistentHash</span>(user.id, 100) <span class="token-punctuation">&lt;</span> rollout
