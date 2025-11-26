@@ -50,7 +50,7 @@
             }
 
             /* Dark Mode - Based on dark.scss & OneDarkJekyll */
-            :root[data-theme="dark"] {
+            html.dark {
                 --bg-color: #27262b;
                 --sidebar-color: #1f1e24;
                 --text-color: #eeebee;
@@ -165,8 +165,10 @@
                 (!("theme" in localStorage) &&
                     window.matchMedia("(prefers-color-scheme: dark)").matches)
             ) {
+                document.documentElement.classList.add("dark");
                 document.documentElement.setAttribute("data-theme", "dark");
             } else {
+                document.documentElement.classList.remove("dark");
                 document.documentElement.setAttribute("data-theme", "light");
             }
         </script>
@@ -704,9 +706,11 @@ user.country <span class="token-punctuation">==</span> <span class="token-string
                 const html = document.documentElement;
                 if (html.getAttribute("data-theme") === "dark") {
                     html.setAttribute("data-theme", "light");
+                    document.documentElement.classList.remove("dark");
                     localStorage.theme = "light";
                 } else {
                     html.setAttribute("data-theme", "dark");
+                    document.documentElement.classList.add("dark");
                     localStorage.theme = "dark";
                 }
             }
